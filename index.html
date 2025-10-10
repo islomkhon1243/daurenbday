@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Поздравление для Даурена</title>
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Arial Black', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* --- Главный экран --- */
+    .container {
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 2s ease-in-out;
+      transition: opacity 0.8s ease;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      animation: textGlow 2s infinite alternate;
+    }
+
+    .typing {
+      font-size: 1.5rem;
+      white-space: pre-line;
+      border-right: 3px solid #fff;
+      display: inline-block;
+      animation: caret 0.7s infinite;
+      max-width: 90%;
+    }
+
+    @keyframes caret { 50% { border-color: transparent; } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes textGlow { from { text-shadow: 0 0 10px #00f, 0 0 20px #0ff; } to { text-shadow: 0 0 20px #ff0, 0 0 40px #f0f; } }
+
+    .big-text {
+      margin-top: 30px;
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      animation: boom 1s ease-in-out infinite alternate;
+    }
+
+    @keyframes boom { from { transform: scale(1); color: #ff0; } to { transform: scale(1.1); color: #f00; } }
+
+    .btn {
+      margin-top: 40px;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      background: #ff0;
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s;
+    }
+
+    .btn:hover { transform: scale(1.1); background: #ffa500; }
+
+    /* --- Кнопка музыки --- */
+    .music-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(255,255,255,0.2);
+      border: 2px solid #fff;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #fff;
+      cursor: pointer;
+      z-index: 200;
+      transition: transform 0.3s;
+    }
+    .music-btn:hover { transform: scale(1.1); }
+
+    /* --- Конфетти --- */
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      top: -10px;
+      animation: fall 3s linear infinite;
+    }
+    @keyframes fall { to { transform: translateY(100vh) rotate(360deg); } }
+
+    /* --- Раздел Даурен --- */
+	.about-dauren {
+	  padding: 100px 20px;
+	  background: linear-gradient(135deg, #1e3c72, #2a5298);
+	  position: relative;
+	  /* ⚠️ overflow убираем, иначе sticky ломается */
+	  overflow: visible;
+	  text-align: center;
+	}
+
+	.about-title {
+	  font-size: 2.8rem;
+	  margin-bottom: 50px;
+	  text-align: center;
+	  animation: fadeIn 2s ease;
+	  text-shadow: 0 0 20px rgba(255,255,255,0.7);
+	}
+
+	/* Контейнер — создаёт высоту под текст */
+	.about-container {
+	  display: flex;
+	  justify-content: center;
+	  align-items: flex-start;
+	  gap: 60px;
+	  max-width: 1200px;
+	  margin: 0 auto;
+	  position: relative;
+	  padding-bottom: 100px;
+	}
+
+	/* Фото — липнет к экрану и двигается со скроллом текста */
+	.about-photo {
+	  position: sticky;
+	  top: 120px; /* регулируй, насколько низко она фиксируется */
+	  flex: 0 0 350px;
+	  height: 350px;
+	  border-radius: 50%;
+	  overflow: hidden;
+	  box-shadow: 0 0 30px rgba(0,0,0,0.6);
+	  animation: float 4s ease-in-out infinite;
+	  align-self: flex-start;
+	}
+
+	@keyframes float {
+	  0%, 100% { transform: translateY(0); }
+	  50% { transform: translateY(-15px); }
+	}
+
+	.about-photo img {
+	  width: 100%;
+	  height: 100%;
+	  object-fit: cover;
+	}
+
+	/* Текст рядом */
+	.about-text {
+	  flex: 1;
+	  font-size: 1.2rem;
+	  line-height: 1.8;
+	  background: rgba(255,255,255,0.1);
+	  padding: 25px 35px;
+	  border-radius: 15px;
+	  box-shadow: 0 0 15px rgba(0,0,0,0.4);
+	  color: #fff;
+	  text-align: left;
+	  min-height: 130vh; /* 👈 добавляем высоту, чтобы фото скроллилось */
+	}
+
+	/* Интересы */
+	.interests {
+	  margin-top: 30px;
+	  display: flex;
+	  flex-wrap: wrap;
+	  gap: 15px;
+	}
+
+	.interest {
+	  background: rgba(255,255,255,0.15);
+	  border: 1px solid rgba(255,255,255,0.2);
+	  border-radius: 20px;
+	  padding: 10px 20px;
+	  font-size: 1rem;
+	  transition: background 0.3s, transform 0.3s;
+	}
+
+	.interest:hover {
+	  background: #ff0;
+	  color: #000;
+	  transform: scale(1.1);
+	}
+
+	/* Адаптив */
+	@media (max-width: 768px) {
+	  .about-container {
+		flex-direction: column;
+		align-items: center;
+	  }
+
+	  .about-photo {
+		position: static;
+		margin-bottom: 30px;
+	  }
+
+	  .about-text {
+		min-height: auto;
+		text-align: center;
+	  }
+	}
+
+    /* --- Галерея --- */
+    .friendship-gallery {
+      text-align: center;
+      padding: 80px 20px;
+      background: linear-gradient(135deg, #2c3e50, #4ca1af);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gallery-title {
+      font-size: 2.5rem;
+      margin-bottom: 60px;
+      text-shadow: 0 0 15px rgba(255,255,255,0.6);
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .photo-line {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 40px;
+      position: relative;
+    }
+
+    .photo {
+      width: 220px;
+      aspect-ratio: 4 / 3;
+      position: relative;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      cursor: pointer;
+      transform-origin: top center;
+      animation: swing 5s ease-in-out infinite;
+      transition: transform 0.4s ease, box-shadow 0.3s;
+    }
+
+    @keyframes swing {
+      0% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+      100% { transform: rotate(-3deg); }
+    }
+
+    .photo:nth-child(even) { animation-delay: 1s; }
+    .photo img, .photo video {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .photo:hover {
+      transform: scale(1.07) rotate(0deg);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+      animation-play-state: paused;
+    }
+
+    .photo:hover img, .photo:hover video { transform: scale(1.05); }
+
+    .caption {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.6);
+      font-size: 0.9rem;
+      padding: 5px 10px;
+      box-sizing: border-box;
+    }
+
+    .photo::before {
+      content: '';
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      width: 24px;
+      height: 24px;
+      background: #d1a46c;
+      border-radius: 3px;
+      transform: translateX(-50%) rotate(5deg);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+      z-index: 2;
+      animation: clipMove 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes clipMove {
+      from { transform: translateX(-50%) rotate(5deg) translateY(0); }
+      to { transform: translateX(-50%) rotate(-5deg) translateY(3px); }
+    }
+
+    /* --- Модалка и финал --- */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .modal-content {
+      width: 90vw;
+      height: 90vh;
+      object-fit: contain;
+      border-radius: 10px;
+      animation: zoomIn 0.4s ease;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      color: #fff;
+      font-size: 40px;
+      cursor: pointer;
+      transition: 0.3s;
+      z-index: 101;
+    }
+    .close:hover { color: #f00; }
+	
+	/* --- Раздел Моё поздравление --- */
+	.my-congrats {
+	  position: relative;
+	  height: 200vh;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  background: radial-gradient(circle at center, #050a20 0%, #000 100%);
+	  overflow: hidden;
+	  color: #0ff;
+	  font-family: 'Orbitron', sans-serif;
+	  text-transform: uppercase;
+	  letter-spacing: 2px;
+	}
+
+	/* Голографическая рамка */
+	.holo-frame {
+	  position: relative;
+	  width: 80%;
+	  max-width: 900px;
+	  border: 2px solid rgba(0,255,255,0.4);
+	  border-radius: 20px;
+	  box-shadow: 0 0 40px rgba(0,255,255,0.3);
+	  padding: 60px 40px;
+	  background: rgba(0, 10, 30, 0.5);
+	  backdrop-filter: blur(8px);
+	  animation: holoGlow 3s infinite alternate;
+	}
+
+	@keyframes holoGlow {
+	  from { box-shadow: 0 0 20px rgba(0,255,255,0.3); border-color: rgba(0,255,255,0.2); }
+	  to { box-shadow: 0 0 40px rgba(0,255,255,0.7); border-color: rgba(0,255,255,0.6); }
+	}
+
+	.holo-title {
+	  font-size: 2.5rem;
+	  text-align: center;
+	  margin-bottom: 40px;
+	  color: #00ffff;
+	  text-shadow: 0 0 20px #00ffff, 0 0 40px #0077ff;
+	  animation: titlePulse 3s infinite alternate;
+	}
+
+	@keyframes titlePulse {
+	  from { opacity: 0.8; transform: scale(1); }
+	  to { opacity: 1; transform: scale(1.05); }
+	}
+
+	/* Центральный блок */
+	.holo-core {
+	  position: relative;
+	  text-align: center;
+	  font-size: 1.4rem;
+	  line-height: 1.8;
+	  color: #0ff;
+	  text-shadow: 0 0 10px #00faff;
+	  min-height: 200px;
+	}
+
+	/* Эффект пульсирующего кольца */
+	.pulse-ring {
+	  position: absolute;
+	  top: 50%;
+	  left: 50%;
+	  width: 200px;
+	  height: 200px;
+	  border: 3px solid rgba(0,255,255,0.4);
+	  border-radius: 50%;
+	  transform: translate(-50%, -50%);
+	  animation: pulse 2.5s ease-out infinite;
+	}
+
+	@keyframes pulse {
+	  0% { transform: translate(-50%, -50%) scale(0.7); opacity: 1; }
+	  100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; }
+	}
+
+	/* Цифровой шум поверх */
+	.my-congrats::after {
+	  content: "";
+	  position: absolute;
+	  inset: 0;
+	  background: repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, transparent 2px);
+	  mix-blend-mode: overlay;
+	  animation: noiseMove 1s linear infinite;
+	}
+
+	@keyframes noiseMove {
+	  0% { background-position: 0 0; }
+	  100% { background-position: 0 10px; }
+	}
+	
+	/* === Раздел песни === */
+	.song-section {
+	  padding: 120px 20px;
+	  text-align: center;
+	  background: radial-gradient(circle at top left, #000428, #004e92);
+	  color: white;
+	  overflow: hidden;
+	}
+
+	.song-title {
+	  font-size: 2.8rem;
+	  margin-bottom: 40px;
+	  text-shadow: 0 0 20px rgba(255,255,255,0.8);
+	  animation: glow 3s ease-in-out infinite alternate;
+	}
+
+	@keyframes glow {
+	  from { text-shadow: 0 0 10px #00f, 0 0 20px #0ff; }
+	  to { text-shadow: 0 0 30px #fff, 0 0 60px #0ff; }
+	}
+
+	.song-container {
+	  max-width: 700px;
+	  margin: 0 auto;
+	  background: rgba(255,255,255,0.1);
+	  border-radius: 20px;
+	  padding: 40px;
+	  box-shadow: 0 0 40px rgba(0,0,0,0.6);
+	  backdrop-filter: blur(10px);
+	}
+
+	.song-btn {
+	  background: linear-gradient(135deg, #00f, #0ff);
+	  border: none;
+	  padding: 15px 40px;
+	  border-radius: 50px;
+	  font-size: 1.2rem;
+	  cursor: pointer;
+	  color: #000;
+	  font-weight: bold;
+	  transition: transform 0.3s, box-shadow 0.3s;
+	}
+
+	.song-btn:hover {
+	  transform: scale(1.1);
+	  box-shadow: 0 0 25px #0ff;
+	}
+
+	/* === Тексты караоке === */
+	.lyrics-container {
+	  position: relative;
+	  height: 180px;
+	  margin-top: 50px;
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: center;
+	  overflow: hidden;
+	}
+
+	.lyric-line {
+	  font-size: 1.4rem;
+	  line-height: 1.8;
+	  transition: opacity 0.6s, transform 0.6s;
+	}
+
+	.lyric-prev,
+	.lyric-next {
+	  opacity: 0.4;
+	  font-size: 1.2rem;
+	}
+
+	.lyric-active {
+	  opacity: 1;
+	  font-weight: bold;
+	  font-size: 1.6rem;
+	  text-shadow: 0 0 15px rgba(255,255,255,0.8);
+	  color: #fff;
+	}
+
+	/* === Анимация смены строк === */
+	.shift-up {
+	  animation: shiftUp 0.6s ease forwards;
+	}
+
+	@keyframes shiftUp {
+	  0% { transform: translateY(0); opacity: 1; }
+	  100% { transform: translateY(-40px); opacity: 1; }
+	}
+	
+	/* === Раздел с глитч-кнопкой === */
+	.glitch-section {
+	  position: relative;
+	  background: linear-gradient(135deg, #1b2735, #090a0f);
+	  color: #fff;
+	  text-align: center;
+	  padding: 100px 20px;
+	  overflow: hidden;
+	}
+
+	/* Заголовок */
+	.glitch-section h2 {
+	  font-size: 2rem;
+	  margin-bottom: 30px;
+	  text-shadow: 0 0 15px #ff9900, 0 0 30px #ff6600;
+	  letter-spacing: 1px;
+	  animation: flicker 2.5s infinite alternate;
+	}
+
+	/* Кнопка с глитч-эффектом */
+	.glitch-btn {
+	  position: relative;
+	  display: inline-block;
+	  padding: 16px 40px;
+	  font-size: 1.2rem;
+	  font-weight: 600;
+	  color: #fff;
+	  background: linear-gradient(90deg, #ff6b00, #ffbb00);
+	  border: none;
+	  border-radius: 10px;
+	  cursor: pointer;
+	  overflow: hidden;
+	  transition: transform 0.2s ease, box-shadow 0.3s ease;
+	  text-transform: uppercase;
+	  box-shadow: 0 0 15px rgba(255, 153, 0, 0.6);
+	}
+
+	.glitch-btn:hover {
+	  transform: scale(1.05);
+	  box-shadow: 0 0 25px rgba(255, 153, 0, 0.8);
+	}
+
+	/* Глитч-слои */
+	.glitch-btn .glitch-layer {
+	  content: "";
+	  position: absolute;
+	  top: 0;
+	  left: 0;
+	  width: 100%;
+	  height: 100%;
+	  background: linear-gradient(90deg, #ff6b00, #ffbb00);
+	  opacity: 0.5;
+	  mix-blend-mode: overlay;
+	  animation: glitchShift 2s infinite linear alternate-reverse;
+	}
+
+	.glitch-btn .glitch-layer:nth-child(2) {
+	  animation-delay: 1s;
+	}
+
+	/* === Анимации === */
+	@keyframes glitchShift {
+	  0% {
+		clip-path: inset(10% 0 85% 0);
+		transform: translate(0);
+	  }
+	  20% {
+		clip-path: inset(85% 0 10% 0);
+		transform: translate(-5px, 2px);
+	  }
+	  40% {
+		clip-path: inset(40% 0 50% 0);
+		transform: translate(3px, -3px);
+	  }
+	  60% {
+		clip-path: inset(70% 0 20% 0);
+		transform: translate(-3px, 1px);
+	  }
+	  80% {
+		clip-path: inset(25% 0 65% 0);
+		transform: translate(5px, -2px);
+	  }
+	  100% {
+		clip-path: inset(0 0 0 0);
+		transform: translate(0);
+	  }
+	}
+
+	/* Мерцание заголовка */
+	@keyframes flicker {
+	  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+		opacity: 1;
+	  }
+	  20%, 24%, 55% {
+		opacity: 0.3;
+	  }
+	}
+
+
+    footer {
+      text-align: center;
+      padding: 60px 20px;
+      background: #111;
+    }
+
+    footer h2 { font-size: 2rem; animation: textGlow 2s infinite alternate; }
+  </style>
+</head>
+<body>
+  <!-- Кнопка музыки -->
+  <div class="music-btn" id="toSong">🔊</div>
+
+  <!-- Главный экран -->
+  <div class="container">
+    <h1>С ДНЁМ РОЖДЕНИЯ, ДАУРЕН!</h1>
+    <div class="typing" id="typing"></div>
+    <div class="big-text" id="bigText"></div>
+    <button class="btn" id="toAbout">Кто такой Даурен?</button>
+  </div>
+
+  <!-- Новый раздел: Что из себя представляет Даурен -->
+  <section class="about-dauren" id="about">
+    <h2 class="about-title">Что из себя представляет Даурен</h2>
+    <div class="about-container">
+      <div class="about-photo">
+        <img src="img/dauren.jpg" alt="Даурен">
+      </div>
+      <div class="about-text">
+        Даурен — это уникальный сплав дисциплины, сарказма и бесконечного задротства, замешанный на искренности и редком чувстве юмора.<br><br>
+		Он родился 14 октября 2001 года, и с тех пор каждый баг в мире начал проверяться тщательнее — ведь появился человек, который по призванию тестирует всё вокруг: от кода до человеческих границ терпения.<br><br>
+
+		Живёт он в Алматы, вместе с матерью и братом — и, несмотря на шум мегаполиса, умудряется сохранять железное спокойствие. 
+		Это тот тип парня, который не просто планирует день — он реально выполняет план. И не потому что “надо”, а потому что он так устроен: целеустремлённый, собранный, без лишних понтов.<br><br>
+
+		Но не дай Бог подумать, что он скучный.<br>
+		Даурен — это легендарный «задрот» в лучшем смысле слова: CS2, мемы, ночные катки, фразы типа «да это не я туплю, это тупые тайминги» — его стихия.<br>
+		И при всём этом он способен поддержать, выслушать, подшутить и вытащить из любого дна настроения такими редкими выражениями в Discord:<br>
+		«Why am I not surpised?», «Do it», «Ты виноват!», «Засранец»<br><br>
+
+		Он тот, кто не ищет лёгких путей — он их дебажит.<br>
+		Тот, кто может работать, учиться и при этом оставаться собой.<br>
+		Тот, с кем можно молчать — и всё равно будет комфортно.<br><br>
+
+		Если коротко:<br>
+		Даурен — это человек, который живёт по принципу “делай, а не болтай”,<br>
+		но при этом умеет так рофлить, что ты потом смеёшься до утра.<br>
+		В нём идеально сочетаются мозг тестировщика, сердце брата и душа геймера.
+        <div class="interests">
+          <div class="interest">Ori</div>
+          <div class="interest">How to train a dragon?</div>
+          <div class="interest">CS2</div>
+          <div class="interest">Тренировки</div>
+          <div class="interest">Дисциплина</div>
+          <div class="interest">Мотивация</div>
+        </div>
+      </div>
+    </div>
+    <button class="btn" id="toGallery">Смотреть историю дружбы</button>
+  </section>
+
+  <!-- Галерея -->
+  <section class="friendship-gallery" id="gallery">
+    <h2 class="gallery-title">История нашей дружбы</h2>
+    <div class="photo-line">
+      <div class="photo"><img src="img/photo1.jpg" alt=""><div class="caption">Первая дни в МУИТе</div></div>
+      <div class="photo"><img src="img/photo2.jpg" alt=""><div class="caption">Знакомство с шарагой</div></div>
+      <div class="photo"><video src="video/video1.mp4" autoplay muted loop></video><div class="caption">Весёлые моменты</div></div>
+      <div class="photo"><img src="img/photo3.jpg" alt=""><div class="caption">Сумасшедшие будние</div></div>
+      <div class="photo"><video src="video/video2.mp4" autoplay muted loop></video><div class="caption">Избавляемся от шлака</div></div>
+      <div class="photo"><img src="img/photo4.jpg" alt=""><div class="caption">Настоящий он вырывается</div></div>
+	  <div class="photo"><img src="img/photo5.jpg" alt=""><div class="caption">Усердно работали над хуеломкой</div></div>
+	  <div class="photo"><img src="img/photo6.jpg" alt=""><div class="caption">Ебать, че за взгляд, ауф</div></div>
+	  <div class="photo"><img src="img/photo7.jpg" alt=""><div class="caption">Опять эти, два дебила</div></div>
+	  <div class="photo"><img src="img/photo8.jpg" alt=""><div class="caption">Вылупился мило</div></div>
+	  <div class="photo"><img src="img/photo9.jpg" alt=""><div class="caption">Мой сюрприз приезд удался</div></div>
+	  <div class="photo"><img src="img/photo10.jpg" alt=""><div class="caption">Главное в жизни найти того, кто будет смотреть также</div></div>
+	  <div class="photo"><img src="img/photo11.jpg" alt=""><div class="caption">Некачественное - качественное фото</div></div>
+	  <div class="photo"><img src="img/photo12.jpg" alt=""><div class="caption">Смешинка попала</div></div>
+	  <div class="photo"><img src="img/photo13.jpg" alt=""><div class="caption">Каждый в своем мире короче</div></div>
+	  <div class="photo"><img src="img/photo14.jpg" alt=""><div class="caption">Wassup, bitches</div></div>
+	  <div class="photo"><img src="img/photo15.jpg" alt=""><div class="caption">Страшно, вырубай</div></div>
+	  <div class="photo"><img src="img/photo16.jpg" alt=""><div class="caption">Fuck You</div></div>
+	  <div class="photo"><img src="img/photo17.jpg" alt=""><div class="caption">На лекции, ёпта</div></div>
+	  <div class="photo"><img src="img/photo18.jpg" alt=""><div class="caption">Здрасьте, добрый вечер</div></div>
+	  <div class="photo"><img src="img/photo19.jpg" alt=""><div class="caption">ПОШЛИ ВОН, без меня собрались</div></div>
+	  <div class="photo"><img src="img/photo20.jpg" alt=""><div class="caption">АХАХАХХАХАХАХАХАХА</div></div>
+	  <div class="photo"><img src="img/photo21.jpg" alt=""><div class="caption">Буквально</div></div>
+	  <div class="photo"><img src="img/photo22.jpg" alt=""><div class="caption">Потные Алатауские вечера</div></div>
+	  <div class="photo"><img src="img/photo23.jpg" alt=""><div class="caption">Эх, душевные прогулки летом</div></div>
+	  <div class="photo"><img src="img/photo24.jpg" alt=""><div class="caption">Наконец-то, выпустили</div></div>
+	  <div class="photo"><img src="img/photo25.jpg" alt=""><div class="caption">Bombastic side eye</div></div>
+	  <div class="photo"><img src="img/photo1.png" alt=""><div class="caption">Видел маи бицепсики</div></div>
+	  <div class="photo"><img src="img/photo2.png" alt=""><div class="caption">У всех gross face</div></div>
+	  <div class="photo"><img src="img/photo3.png" alt=""><div class="caption">Сохнут по нему, аж засмушался</div></div>
+	  <div class="photo"><img src="img/photo4.png" alt=""><div class="caption">В обнимку, ммм</div></div>
+	  <div class="photo"><img src="img/photo5.png" alt=""><div class="caption">Че лыбишься?(улыбайся чаще)</div></div>
+	  <div class="photo"><img src="img/photo6.png" alt=""><div class="caption">Упс, папарацции</div></div>
+    </div>
+  </section>
+
+  <!-- Модалка -->
+  <div id="modal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modalImg" src="">
+  </div>
+  
+  <!-- --- Раздел: Моё поздравление --- -->
+	<section class="my-congrats" id="my-congrats">
+	  <div class="holo-frame">
+		<h2 class="holo-title">МОЁ ПОЗДРАВЛЕНИЕ</h2>
+		<div class="holo-core">
+		  <p id="holoText"></p>
+		  <div class="pulse-ring"></div>
+		</div>
+	  </div>
+	</section>
+	
+  <!-- === Раздел песни с караоке-анимацией === -->
+	<section class="song-section" id="song">
+	  <h2 class="song-title">🎶 Песня для тебя</h2>
+	  <div class="song-container">
+		<audio id="songAudio" src="audio/song.mp3"></audio>
+		<button id="playSong" class="song-btn">▶️ Включить песню</button>
+		<div class="lyrics-container">
+		  <div class="lyric-line lyric-prev" id="prevLine"></div>
+		  <div class="lyric-line lyric-active" id="activeLine"></div>
+		  <div class="lyric-line lyric-next" id="nextLine"></div>
+		</div>
+	  </div>
+	</section>
+	
+	<!-- === Отдельный блок: кнопка перехода на баги-сюрпризы === -->
+  <section class="glitch-section">
+    <div style="text-align:center; padding:100px 20px; background:linear-gradient(135deg,#1b2735,#090a0f);">
+      <h2 style="font-size:2rem; margin-bottom:30px; text-shadow:0 0 15px #ff9900;">Хочешь немного хаоса?</h2>
+      <button class="glitch-btn" onclick="window.location.href='bugs/bugs.html'">
+        🎁 Баги-сюрпризы
+        <span class="glitch-layer"></span>
+        <span class="glitch-layer"></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Финал -->
+  <footer>
+    <h2>С огромным хуём... ой, любовью от Ислама 🤝</h2>
+  </footer>
+
+  <script>
+    // Эффект печати
+    const text = "Брат, 24 — это только начало!\nТы стал сильным, умным и верным своим целям.\nПусть каждый баг превращается в апдейт,\nа жизнь радует новыми достижениями!";
+    let i = 0;
+    const typingDiv = document.getElementById('typing');
+    function typing() {
+      if (i < text.length) {
+        typingDiv.textContent += text.charAt(i);
+        i++;
+        setTimeout(typing, 50);
+      } else {
+        document.getElementById('bigText').textContent = "ДАУРЕН, ТЫ ЛУЧШИЙ!";
+        startConfetti();
+      }
+    }
+    typing();
+
+    // Конфетти
+    function startConfetti() {
+      for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.left = Math.random() * window.innerWidth + "px";
+        confetti.style.background = `hsl(${Math.random()*360}, 100%, 50%)`;
+        confetti.style.animationDuration = (Math.random() * 3 + 2) + "s";
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 5000);
+      }
+    }
+
+    // Переходы
+    document.getElementById('toAbout').onclick = () => {
+      document.getElementById('about').scrollIntoView({behavior:'smooth'});
+    };
+    document.getElementById('toGallery').onclick = () => {
+      document.getElementById('gallery').scrollIntoView({behavior:'smooth'});
+    };
+	document.getElementById('toSong').onclick = () => {
+      document.getElementById('song').scrollIntoView({behavior:'smooth'});
+    };
+
+    // Модалка
+    const modal = document.getElementById("modal");
+    const modalImg = document.getElementById("modalImg");
+    const closeBtn = document.querySelector(".close");
+    document.querySelectorAll(".photo img").forEach(img => {
+      img.onclick = () => {
+        modal.style.display = "flex";
+        modalImg.src = img.src;
+      };
+    });
+    closeBtn.onclick = () => modal.style.display = "none";
+    modal.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
+	
+	const congratsText = `
+	Даурен, брат.
+	14 октября — день, когда мир официально стал немного лучше, а интернет — медленнее, потому что появился ты, главный тестировщик всего, что только можно протестировать: от багов в играх до моей психики.
+
+	Помню, как в августе 2019-го мы оба стояли на пороге универа — такие умные, такие наивные, и абсолютно не понимали, во что вписываемся. И вот прошло уже столько лет — а мы всё те же, только теперь ты в Алматы, серьёзный мужчина с планами, целями и чётким тайм-менеджментом (а я до сих пор не понимаю, как ты живёшь по расписанию, а не по вдохновению и багрепортам судьбы).
+
+	Ты — тот самый редкий тип человека, который не просто говорит «надо работать над собой», а реально это делает. Дисциплина, ответственность, мозги, уверенность — и всё это приправлено твоим фирменным хыхунизмом и способностью рофлить так, что даже после тяжёлого дня ржёшь до слёз.
+
+	Но знаешь, что самое крутое?
+	Ты не просто задрот. Ты — задрот с душой. Да-да, звучит как оксюморон, но ты доказываешь, что можно быть задротом и при этом настоящим человеком: добрым, верным и тем, кто всегда рядом.
+
+	Каждая пятница, когда мы залетаем в CS2, — это уже не просто катка. Это мини-праздник, где ты орёшь в микрофон «ЭТО МОЙ РАУНД!», потом делаешь 30 фрагов подряд, а я вспоминаю, что дружба — это когда тебя унижают на Dust2, но ты всё равно счастлив.
+
+	Даур, Венджегуль, Хыхун — ты для меня не просто друг. Ты уже часть моей истории, тот человек, с кем можно молчать часами и всё равно понимать друг друга без слов.
+	Ты вырос, стал взрослым, но при этом остался тем же добрым пацаном, который не боится мечтать, ржать и жить по-настоящему.
+
+	Так что в твой день рождения я не просто желаю тебе счастья — я желаю тебе стабильного FPS в жизни, минимального пинга с судьбой и, конечно, бесконечного лута в виде здоровья, удачи и любви.
+	Пусть все баги решаются легко, а жизнь катится как идеальный спидран без лагов.
+
+	С днём рождения, брат.
+	Ты — тот, с кем хоть в катку, хоть в жизнь.
+	И если бы существовал рейтинг друзей, ты был бы в топ-1. Даже без буста.
+	`;
+
+	let j = 0;
+	const holoText = document.getElementById("holoText");
+
+	function typeHolo() {
+	  if (j < congratsText.length) {
+		holoText.textContent += congratsText.charAt(j);
+		j++;
+		setTimeout(typeHolo, 35);
+	  }
+	}
+
+	window.addEventListener("scroll", () => {
+	  const section = document.getElementById("my-congrats");
+	  const rect = section.getBoundingClientRect();
+	  if (rect.top < window.innerHeight / 1.3 && rect.bottom > 0) {
+		if (holoText.textContent === "") {
+		  typeHolo();
+		}
+	  }
+	});
+	
+	const lyricsData = [
+	  { time: 0, text: "..." },
+	  { time: 6, text: "Smoking cigarettes on the roof" },
+	  { time: 13, text: "You look so handsome and I admire this view" },
+	  { time: 20, text: "We became friends in October" },
+	  { time: 25, text: "That's why, I love fall" },
+	  { time: 29, text: "Looking at the stars" },
+	  { time: 32, text: "Admiring from afar" },
+	  { time: 36, text: "Ma boi, ma boi, ma boi" },
+	  { time: 41, text: "You will be ma boi" },
+	  { time: 43, text: "Ma boi, ma boi, ma boi" },
+	  { time: 49, text: "You will be ma world" },
+	  { time: 51, text: "Ma world, ma world, ma world" },
+	  { time: 56, text: "You will be ma boi" },
+	  { time: 58, text: "🖤" },
+	];
+
+	const audio = document.getElementById('songAudio');
+	const playBtn = document.getElementById('playSong');
+	const prevLine = document.getElementById('prevLine');
+	const activeLine = document.getElementById('activeLine');
+	const nextLine = document.getElementById('nextLine');
+
+	let currentIndex = 0;
+	let interval;
+
+	playBtn.addEventListener('click', () => {
+	  if (audio.paused) {
+		audio.play();
+		playBtn.textContent = '⏸ Пауза';
+		startLyrics();
+	  } else {
+		audio.pause();
+		playBtn.textContent = '▶️ Продолжить';
+		clearInterval(interval);
+	  }
+	});
+
+	function startLyrics() {
+	  clearInterval(interval);
+	  currentIndex = 0;
+	  updateLyricsDisplay();
+
+	  interval = setInterval(() => {
+		if (currentIndex < lyricsData.length - 1 && audio.currentTime >= lyricsData[currentIndex + 1].time) {
+		  currentIndex++;
+		  animateLyricsChange();
+		}
+		if (currentIndex >= lyricsData.length - 1) clearInterval(interval);
+	  }, 300);
+	}
+
+	function updateLyricsDisplay() {
+	  prevLine.textContent = lyricsData[currentIndex - 1]?.text || '';
+	  activeLine.textContent = lyricsData[currentIndex]?.text || '';
+	  nextLine.textContent = lyricsData[currentIndex + 1]?.text || '';
+	}
+
+	function animateLyricsChange() {
+	  document.querySelector('.lyrics-container').classList.add('shift-up');
+
+	  setTimeout(() => {
+		updateLyricsDisplay();
+		document.querySelector('.lyrics-container').classList.remove('shift-up');
+	  }, 600); // должна совпадать с animation-duration
+	}
+
+	audio.addEventListener('ended', () => {
+	  playBtn.textContent = '▶️ Включить песню';
+	  clearInterval(interval);
+	});
+  </script>
+</body>
+</html>

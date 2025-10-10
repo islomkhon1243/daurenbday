@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Bug Hunt — Даурен, 24 — Пошаговый квест</title>
+<!-- jsPDF для генерации сертификата -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+<style>
+  :root{
+    --bg:#061122; --card:#071427; --accent:#6ee7ff; --muted:#98b3c8;
+    --good:#7ee787; --glass: rgba(255,255,255,0.02);
+    --radius:12px; --max-w:980px;
+  }
+  html,body{height:100%;margin:0;font-family:Inter, "Segoe UI", Roboto, Arial, sans-serif;background:linear-gradient(180deg,#041021,#081426);color:#e6f0fa}
+  .wrap{max-width:var(--max-w);margin:22px auto;padding:20px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));box-shadow:0 10px 40px rgba(0,0,0,0.6)}
+  header{display:flex;gap:12px;align-items:center}
+  .logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7b61ff);display:flex;align-items:center;justify-content:center;font-weight:800;color:#071427}
+  h1{margin:0;font-size:20px;color:var(--accent)}
+  p.lead{margin:2px 0 0;color:var(--muted);font-size:13px}
+  /* Stepper */
+  .stepper{display:flex;gap:8px;margin-top:18px;align-items:center;overflow-x:auto;padding-bottom:6px}
+  .step{min-width:44px;height:44px;border-radius:10px;background:var(--card);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--muted);border:1px solid rgba(255,255,255,0.02)}
+  .step.active{box-shadow:0 6px 18px rgba(0,0,0,0.6);border:1px solid var(--accent);color:var(--accent)}
+  .step.done{background:linear-gradient(90deg,var(--good),#6ee7ff);color:#071427}
+  .step-label{font-size:12px;margin-top:6px;text-align:center;color:var(--muted)}
+  .container{display:flex;gap:18px;margin-top:16px}
+  .left{flex:1;min-width:320px}
+  .right{width:360px}
+  .panel{background:var(--card);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+  .step-panel{display:none}
+  .step-panel.active{display:block}
+  .meta{display:flex;justify-content:space-between;align-items:center}
+  .meta strong{color:var(--accent);font-size:16px}
+  .desc{color:var(--muted);font-size:13px;margin-top:8px}
+  .btn{background:linear-gradient(180deg,#1580ff,#0b63d9);border:0;color:white;padding:8px 12px;border-radius:10px;font-weight:700;cursor:pointer}
+  .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+  .small{font-size:13px;color:var(--muted)}
+  .hint{color:#ffd480;font-weight:700}
+  textarea.code{width:100%;height:120px;background:#0b1220;color:#d7eefb;border:1px solid rgba(255,255,255,0.03);border-radius:8px;padding:8px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace}
+  .row{display:flex;gap:8px;align-items:center}
+  .reports{margin-top:12px}
+  .success{color:var(--good);font-weight:700}
+  .hidden{display:none}
+  .progress{height:10px;background:rgba(255,255,255,0.03);border-radius:8px;overflow:hidden;margin-top:12px}
+  .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--good),var(--accent));width:0%}
+  input[type="text"]{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:#071827;color:#eaf6ff}
+  .ok-badge{padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.02);font-weight:700;color:var(--muted)}
+  .center{text-align:center}
+  footer{margin-top:16px;color:var(--muted);font-size:13px}
+  @media (max-width:900px){.container{flex-direction:column}.right{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap" role="main" aria-labelledby="title">
+  <header>
+    <div class="logo" aria-hidden="true">BH</div>
+    <div>
+      <h1 id="title">Bug Hunt — Даурен, 24 — Пошаговый квест</h1>
+      <p class="lead">Пошаговый интерактив: каждое задание понятно, есть подсказки и проверка. Для QA удовольствия и подарка.</p>
+    </div>
+  </header>
+
+  <!-- Stepper -->
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <div class="stepper" id="stepper" role="tablist" aria-label="Шаги квеста">
+      <div class="step active" data-step="1">1</div>
+      <div class="step" data-step="2">2</div>
+      <div class="step" data-step="3">3</div>
+      <div class="step" data-step="4">4</div>
+      <div class="step" data-step="5">5</div>
+    </div>
+    <div class="small">Пройдено: <span id="passedCount">0</span>/5</div>
+  </div>
+
+  <div class="container">
+    <div class="left">
+      <!-- Step panels: только один активен -->
+      <div class="panel step-panel active" data-step="1" id="panel-1">
+        <div class="meta"><strong>Step 1 — Кнопка модала (UI bug)</strong><div class="ok-badge" id="badge-1">Не пройден</div></div>
+        <div class="desc">Кнопка "Открыть модал" выглядит рабочей, но не открывает модал. Мы дадим подсказки, покажем код и вы сможете применить исправление прямо в браузере.</div>
+
+        <hr style="margin:12px 0;border-color:rgba(255,255,255,0.02)">
+
+        <div class="center" style="margin-bottom:10px">
+          <button class="btn" id="brokenBtn">Открыть модал</button>
+        </div>
+
+        <div class="small">Шаги (чётко):</div>
+        <ol class="small" style="margin:8px 0 6px 18px;color:var(--muted)">
+          <li>Нажмите "Показать подсказку" — получите подсказку 1.</li>
+          <li>Откройте секцию <em>Inspector</em> — там есть код кнопки.</li>
+          <li>Внесите правку в код (Apply patch) — затем нажмите кнопку "Открыть модал".</li>
+          <li>После открытия модала — заполните короткий репорт ниже и нажмите "Отправить репорт".</li>
+        </ol>
+
+        <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
+          <button class="btn secondary" id="hint1-1">Показать подсказку</button>
+          <button class="btn secondary" id="showInspector1">Открыть Inspector</button>
+          <button class="btn secondary" id="applyPatch1">Применить исправление (Apply patch)</button>
+        </div>
+
+        <div id="inspector1" class="hidden" style="margin-top:10px">
+          <div class="small">Код кнопки (редактируйте атрибут data-working на true и нажмите <em>Apply patch</em>):</div>
+          <textarea id="code1" class="code" spellcheck="false">&lt;button id="brokenBtn" data-working="false"&gt;Открыть модал&lt;/button&gt;</textarea>
+        </div>
+
+        <div id="hintText1" class="small hidden" style="margin-top:8px;color:#ffd480">Подсказка: ищите атрибут <code>data-working</code> — он выключает обработчик.</div>
+
+        <!-- Modal (скрытый по умолчанию) -->
+        <div id="realModal" class="hidden" style="margin-top:12px;padding:12px;background:rgba(255,255,255,0.02);border-radius:10px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><strong style="color:var(--accent)">Модальное окно — Internal Preview</strong>
+              <div class="small" style="margin-top:6px">Отлично! Модал открылся — опишите коротко, какой баг вы нашли и как его исправили.</div>
+            </div>
+            <div><button class="btn" id="closeModal">Закрыть</button></div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <label class="small">Короткий репорт (обязательно):</label>
+          <input type="text" id="report1" placeholder="Например: 'data-working=false — attached handler missing'" />
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="btn" id="sendReport1">Отправить репорт и завершить шаг</button>
+            <button class="btn secondary" id="skip1">Пропустить (только для теста)</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel step-panel" data-step="2" id="panel-2">
+        <div class="meta"><strong>Step 2 — Опечатка в тексте (Content bug)</strong><div class="ok-badge" id="badge-2">Не пройден</div></div>
+        <div class="desc">Найдите и исправьте опечатку в приветствии. Правка делается прямо в тексте (инлайн).</div>
+
+        <div style="margin-top:10px" class="panel" aria-live="polite">
+          <div class="small">Текст (кликабельно/редактируемо):</div>
+          <p id="greeting" contenteditable="true" style="padding:10px;background:rgba(255,255,255,0.01);border-radius:8px;margin-top:8px">
+            Happy birthday, <span id="typo" style="text-decoration:underline dotted #ffd480;cursor:text">Daurn</span>! — best wishes from the team.
+          </p>
+          <div class="small" style="margin-top:6px;color:var(--muted)">Дважды кликните на подчеркнутом слове и исправьте на <strong>Dauren</strong>, затем нажмите "Проверить и отправить репорт".</div>
+
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="btn" id="check2">Проверить и отправить репорт</button>
+            <button class="btn secondary" id="hint2-1">Показать подсказку</button>
+          </div>
+
+          <div style="margin-top:10px">
+            <label class="small">Короткий репорт:</label>
+            <input type="text" id="report2" placeholder="Например: 'Опечатка: Daurn → Dauren'"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel step-panel" data-step="3" id="panel-3">
+        <div class="meta"><strong>Step 3 — Неверный расчёт (Logic bug)</strong><div class="ok-badge" id="badge-3">Не пройден</div></div>
+        <div class="desc">Калькулятор показывает неверную сумму. Откройте логику, примените фикс и подтвердите.</div>
+
+        <div style="margin-top:10px" class="panel">
+          <div class="small">Inputs:</div>
+          <div style="display:flex;gap:8px;margin-top:6px">
+            <input id="base" type="text" value="1000" />
+            <input id="tax" type="text" value="100" />
+            <div class="small" style="align-self:center">KZT</div>
+          </div>
+
+          <div style="margin-top:8px" class="small">Displayed payroll:</div>
+          <div style="margin-top:6px;padding:10px;background:rgba(255,255,255,0.01);border-radius:8px">
+            <strong id="paySum">1000 KZT</strong> <span class="small" style="margin-left:10px;color:var(--muted)">(ожидается 900 KZT)</span>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button class="btn secondary" id="inspect3">Открыть логику</button>
+            <button class="btn secondary" id="applyPatch3">Применить исправление</button>
+            <button class="btn" id="recalc3">Recalculate (обновить отображение)</button>
+          </div>
+
+          <div id="logic3" class="hidden" style="margin-top:10px">
+            <div class="small">Faulty function (измените на правильную логику):</div>
+            <textarea id="code3" class="code" spellcheck="false">function calcPayroll(base, tax){ return base; // BUG: should subtract tax }</textarea>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <button class="btn" id="applyCode3">Применить код</button>
+              <button class="btn secondary" id="hint3">Показать подсказку</button>
+            </div>
+          </div>
+
+          <div style="margin-top:10px">
+            <label class="small">Репорт:</label>
+            <input id="report3" type="text" placeholder="Например: 'calcPayroll returns base instead of base - tax'"/>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <button class="btn" id="sendReport3">Отправить репорт и завершить шаг</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel step-panel" data-step="4" id="panel-4">
+        <div class="meta"><strong>Step 4 — Flaky element (Intermittent)</strong><div class="ok-badge" id="badge-4">Не пройден</div></div>
+        <div class="desc">Элемент появляется не всегда. Попробуйте показать его вручную или включите автопоиск.</div>
+
+        <div style="margin-top:10px">
+          <div class="small">Попробуйте кнопки ниже: каждая попытка показывает элемент с небольшой вероятностью. Используйте автопоиск, если устанете.</div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="btn" id="tryFlaky">Попробовать показать</button>
+            <button class="btn secondary" id="autoFlaky">Авто (повторять пока не покажется)</button>
+            <button class="btn secondary" id="stopAutoFlaky" disabled>Остановить авто</button>
+          </div>
+
+          <div id="flakyArea" style="margin-top:10px;min-height:44px"></div>
+
+          <div style="margin-top:10px">
+            <label class="small">Репорт (кратко):</label>
+            <input id="report4" type="text" placeholder="Например: 'Flaky element appears randomly on reload'"/>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <button class="btn" id="sendReport4">Отправить репорт и завершить шаг (после нахождения)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel step-panel" data-step="5" id="panel-5">
+        <div class="meta"><strong>Step 5 — Спрятанный флаг (Hidden / search)</strong><div class="ok-badge" id="badge-5">Не пройден</div></div>
+        <div class="desc">Найдите спрятанный флаг на странице и введите его точно в поле. Это финальный easter-egg.</div>
+
+        <div style="margin-top:10px">
+          <div class="small">Есть скрытый input с id="secretFlag". Нажмите "Поиск флага" или используйте "Reveal hidden".</div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="btn" id="revealFlag">Reveal hidden</button>
+            <button class="btn secondary" id="searchFlag">Поиск флага</button>
+          </div>
+
+          <div id="revealArea" style="margin-top:10px"></div>
+
+          <div style="margin-top:10px">
+            <label class="small">Введите флаг точно:</label>
+            <input id="flagInput" type="text" placeholder="Например: DAUREN24"/>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <button class="btn" id="submitFlag">Проверить и завершить</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- /left -->
+
+    <div class="right">
+      <div class="panel">
+        <div><strong>Прогресс</strong></div>
+        <div class="small" style="margin-top:8px">Текущий шаг: <span id="currentStep">1</span></div>
+        <div class="progress" aria-hidden="true"><i id="progressBar" style="width:0%"></i></div>
+
+        <div class="reports" style="margin-top:12px">
+          <strong>Отправленные репорты</strong>
+          <ul id="reportsList" class="small" style="margin-top:8px;color:var(--muted)"></ul>
+        </div>
+
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <button class="btn secondary" id="prevBtn" disabled>Назад</button>
+          <button class="btn" id="nextBtn">Далее</button>
+        </div>
+
+        <div style="margin-top:10px">
+          <button class="btn" id="finishBtn">Завершить и получить сертификат</button>
+          <div class="small" style="margin-top:8px;color:var(--muted)">Сертификат можно скачать в PDF даже если не все шаги пройдены.</div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:12px">
+        <div><strong>Подсказки</strong></div>
+        <div class="small" style="margin-top:8px">Показ подсказок учитывается шаг за шагом — сначала легкая подсказка, затем более подробная.</div>
+        <div id="globalHints" style="margin-top:8px"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="small">Персонализация: Даурен — 14 октября — 24 года.</div><br>
+	<button class="btn" id="backBtn" onclick="window.location.href='../index.html'">Назад к поздравлениям</button>
+  </footer>
+</div>
+
+<!-- скрытый флаг элемент -->
+<input type="hidden" id="secretFlag" value="DAUREN24" />
+
+<script>
+/* Пошаговая логика квеста */
+(function(){
+  const TOTAL = 5;
+  let current = 1;
+  const stepPanels = document.querySelectorAll('.step-panel');
+  const stepperDots = document.querySelectorAll('.stepper .step');
+  const reportsList = document.getElementById('reportsList');
+  const passed = new Set();
+  const progressBar = document.getElementById('progressBar');
+  const passedCount = document.getElementById('passedCount');
+
+  // state per step: { fixed:bool, report: string|null }
+  const state = {
+    1: { fixed:false, report:null },
+    2: { fixed:false, report:null },
+    3: { fixed:false, report:null },
+    4: { fixed:false, report:null },
+    5: { fixed:false, report:null }
+  };
+
+  // init UI
+  function showStep(n){
+    current = n;
+    document.getElementById('currentStep').textContent = n;
+    stepPanels.forEach(p => p.classList.toggle('active', Number(p.dataset.step)===n));
+    stepperDots.forEach(d => d.classList.toggle('active', Number(d.dataset.step)===n));
+    document.getElementById('prevBtn').disabled = n===1;
+    document.getElementById('nextBtn').disabled = n===TOTAL;
+    updateProgress();
+  }
+
+  function updateProgress(){
+    const pct = Math.round((Array.from(passed).length / TOTAL) * 100);
+    progressBar.style.width = pct + '%';
+    passedCount.textContent = passed.size;
+  }
+
+  function addReport(step, text){
+    const item = document.createElement('li');
+    item.textContent = `Step ${step} — ${text}`;
+    reportsList.appendChild(item);
+    state[step].report = text;
+    saveState();
+  }
+
+  function markPassed(step){
+    if (!passed.has(step)){
+      passed.add(step);
+      const dot = document.querySelector(`.stepper .step[data-step="${step}"]`);
+      if (dot) dot.classList.add('done');
+      const badge = document.getElementById('badge-'+step);
+      if (badge) { badge.textContent = 'Пройден'; badge.style.background='transparent'; badge.style.color='var(--good)'; }
+      updateProgress();
+      saveState();
+    }
+  }
+
+  // local save/load
+  const storageKey = 'dauren_bughunt_v2';
+  function saveState(){
+    const obj = { state, passed: Array.from(passed) };
+    localStorage.setItem(storageKey, JSON.stringify(obj));
+  }
+  function loadState(){
+    try {
+      const raw = localStorage.getItem(storageKey);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (parsed && parsed.passed) {
+        parsed.passed.forEach(s => passed.add(Number(s)));
+        // restore reports list
+        if (parsed.state){
+          for (let i=1;i<=TOTAL;i++){
+            if (parsed.state[i] && parsed.state[i].report){
+              addReport(i, parsed.state[i].report);
+              state[i].report = parsed.state[i].report;
+            }
+            if (parsed.passed.includes(String(i)) || parsed.passed.includes(i)) markPassed(i);
+          }
+        }
+      }
+    } catch(e){}
+    updateProgress();
+  }
+
+  // Stepper click
+  stepperDots.forEach(dot=>{
+    dot.addEventListener('click', ()=> {
+      const s = Number(dot.dataset.step);
+      showStep(s);
+    });
+  });
+
+  document.getElementById('prevBtn').addEventListener('click', ()=>{
+    if (current>1) showStep(current-1);
+  });
+  document.getElementById('nextBtn').addEventListener('click', ()=>{
+    if (current<TOTAL) showStep(current+1);
+  });
+
+  // ---------- Step 1 logic ----------
+  const brokenBtn = document.getElementById('brokenBtn');
+  const inspector1 = document.getElementById('inspector1');
+  const code1 = document.getElementById('code1');
+  const hintText1 = document.getElementById('hintText1');
+  const realModal = document.getElementById('realModal');
+
+  document.getElementById('hint1-1').addEventListener('click', ()=>{
+    hintText1.classList.remove('hidden');
+    document.getElementById('globalHints').innerHTML = '<div class="small">Hint 1 (Step1): ищите атрибут, который отключает обработчик.</div>';
+  });
+  document.getElementById('showInspector1').addEventListener('click', ()=> inspector1.classList.toggle('hidden'));
+
+  // clicking "Открыть модал" пока не работает (симуляция бага)
+  brokenBtn.addEventListener('click', ()=>{
+    // если уже исправлено - откроем модал
+    if (brokenBtn.dataset.working === 'true') {
+      openModal();
+      return;
+    }
+    alert('Кнопка кажется не работает. Открой Inspector и примените исправление.');
+  });
+
+  function openModal(){
+    realModal.classList.remove('hidden');
+    realModal.scrollIntoView({behavior:'smooth'});
+  }
+  document.getElementById('closeModal').addEventListener('click', ()=> realModal.classList.add('hidden'));
+
+  document.getElementById('applyPatch1').addEventListener('click', ()=>{
+    // прочитаем содержимое textarea и проверим data-working="true"
+    const txt = code1.value;
+    if (txt.includes('data-working="true"') || txt.includes("data-working='true'")) {
+      // применим: установить dataset и повесить обработчик
+      brokenBtn.dataset.working = 'true';
+      brokenBtn.addEventListener('click', openModal);
+      alert('Патч применён: кнопка теперь рабочая. Нажмите "Открыть модал".');
+    } else {
+      alert('В коде должно быть data-working="true". Отредактируйте и нажмите Apply patch.');
+    }
+  });
+
+  document.getElementById('sendReport1').addEventListener('click', ()=>{
+    const r = document.getElementById('report1').value.trim();
+    if (!r) { alert('Введите короткий репорт.'); return; }
+    addReport(1, r);
+    state[1].fixed = true;
+    markPassed(1);
+    saveState();
+    alert('Шаг 1 завершён. Переходим к следующему шагу.');
+    showStep(2);
+  });
+  document.getElementById('skip1').addEventListener('click', ()=>{
+    if (!confirm('Действительно пропустить шаг 1? Это пометит шаг как пройденный.')) return;
+    addReport(1, 'Skipped for test');
+    state[1].fixed = true;
+    markPassed(1);
+    showStep(2);
+  });
+
+  // ---------- Step 2 logic ----------
+  const typoEl = document.getElementById('typo');
+  document.getElementById('hint2-1').addEventListener('click', ()=> {
+    document.getElementById('globalHints').innerHTML = '<div class="small">Подсказка (Step2): неправильная буква в имени — Daurn → Dauren.</div>';
+  });
+  // On check: verify innerText corrected
+  document.getElementById('check2').addEventListener('click', ()=>{
+    const corrected = typoEl.innerText.trim();
+    if (corrected === 'Dauren') {
+      const rep = document.getElementById('report2').value.trim();
+      if (!rep) { alert('Впишите короткий репорт о найденной опечатке.'); return; }
+      addReport(2, rep);
+      state[2].fixed = true;
+      markPassed(2);
+      alert('Опечатка исправлена. Шаг 2 завершён.');
+      showStep(3);
+    } else {
+      alert('Похоже, опечатка ещё не исправлена. Дважды кликните слово и замените на "Dauren".');
+    }
+  });
+
+  // ---------- Step 3 logic ----------
+  const baseInput = document.getElementById('base');
+  const taxInput = document.getElementById('tax');
+  const paySum = document.getElementById('paySum');
+
+  // initial wrong display (simulated bug)
+  function displayPayroll(val){
+    paySum.textContent = val + ' KZT';
+  }
+  displayPayroll(1000);
+
+  document.getElementById('inspect3').addEventListener('click', ()=> document.getElementById('logic3').classList.toggle('hidden'));
+  document.getElementById('applyPatch3').addEventListener('click', ()=> {
+    // auto-set correct code:
+    document.getElementById('code3').value = 'function calcPayroll(base, tax){ return base - tax; }';
+    alert('Патч применён в редакторе кода. Нажмите "Применить код".');
+  });
+  document.getElementById('applyCode3').addEventListener('click', ()=>{
+    // eval code from textarea in a safe-ish wrapper
+    try {
+      const src = document.getElementById('code3').value;
+      // create function
+      const fn = new Function('base','tax', src + '; return calcPayroll(base,tax);');
+      // run with current inputs
+      const val = fn(Number(baseInput.value), Number(taxInput.value));
+      if (Number.isFinite(val)) {
+        displayPayroll(val);
+        alert('Код применён. Обновлено отображение.');
+      } else {
+        alert('Функция вернула неверное значение.');
+      }
+    } catch(e){
+      alert('Ошибка при применении кода: ' + e.message);
+    }
+  });
+
+  document.getElementById('recalc3').addEventListener('click', ()=>{
+    // simple recalculation (if code not patched, keep wrong behavior)
+    const base = Number(baseInput.value);
+    const tax = Number(taxInput.value);
+    // if patch applied (textarea contains "base - tax") we'll simulate correct result
+    const src = document.getElementById('code3').value;
+    if (src.includes('base - tax')) {
+      displayPayroll(base - tax);
+    } else {
+      displayPayroll(base); // buggy behavior
+    }
+  });
+
+  document.getElementById('sendReport3').addEventListener('click', ()=>{
+    const r = document.getElementById('report3').value.trim();
+    if (!r) { alert('Введите репорт.'); return; }
+    // check expected value
+    const expected = Number(baseInput.value) - Number(taxInput.value);
+    const shown = Number(paySum.textContent.replace(/\D/g,''));
+    addReport(3, r);
+    if (shown === expected) {
+      state[3].fixed = true;
+      markPassed(3);
+      alert('Шаг 3 завершён — расчёт исправлен.');
+      showStep(4);
+    } else {
+      alert('Репорт принят, но расчёт всё ещё неверный. Исправьте логику (Apply code) и нажмите Recalculate, затем повторите отправку репорта.');
+    }
+  });
+
+  // ---------- Step 4 logic ----------
+  const flakyArea = document.getElementById('flakyArea');
+  let autoInterval = null;
+  document.getElementById('tryFlaky').addEventListener('click', tryFlaky);
+  document.getElementById('autoFlaky').addEventListener('click', ()=>{
+    document.getElementById('stopAutoFlaky').disabled = false;
+    autoInterval = setInterval( ()=> {
+      if (tryFlaky()) {
+        clearInterval(autoInterval);
+        autoInterval = null;
+        document.getElementById('stopAutoFlaky').disabled = true;
+      }
+    }, 700);
+  });
+  document.getElementById('stopAutoFlaky').addEventListener('click', ()=>{
+    if (autoInterval) clearInterval(autoInterval);
+    autoInterval = null;
+    document.getElementById('stopAutoFlaky').disabled = true;
+  });
+
+  function tryFlaky(){
+    flakyArea.innerHTML = '';
+    const chance = Math.random();
+    if (chance < 0.35) {
+      const el = document.createElement('div');
+      el.innerHTML = '<strong style="color:var(--good)">Flaky element появился — поздравляем!</strong>';
+      const btn = document.createElement('button');
+      btn.textContent = 'Отметить как найдено';
+      btn.className = 'btn';
+      btn.style.marginTop = '8px';
+      btn.addEventListener('click', ()=>{
+        const r = document.getElementById('report4').value.trim();
+        if (!r) { alert('Введите репорт перед отметкой.'); return; }
+        addReport(4, r);
+        state[4].fixed = true;
+        markPassed(4);
+        alert('Шаг 4 завершён.');
+        showStep(5);
+      });
+      el.appendChild(btn);
+      flakyArea.appendChild(el);
+      return true;
+    } else {
+      const el = document.createElement('div');
+      el.className = 'small';
+      el.textContent = 'Элемент не появился. Попробуйте ещё раз или включите авто.';
+      flakyArea.appendChild(el);
+      return false;
+    }
+  }
+
+  document.getElementById('sendReport4').addEventListener('click', ()=>{
+    if (!state[4].fixed) {
+      alert('Сначала найдите flaky элемент (Try or Auto). Затем отправьте репорт, чтобы завершить шаг.');
+      return;
+    }
+    // If already fixed, report already added by button; ensure saved
+    saveState();
+  });
+
+  // ---------- Step 5 logic ----------
+  const revealArea = document.getElementById('revealArea');
+  document.getElementById('revealFlag').addEventListener('click', ()=>{
+    const flagEl = document.getElementById('secretFlag');
+    revealArea.innerHTML = `<div class="small">Hidden input revealed: <code id="flagVal">${flagEl.value}</code></div>`;
+    revealArea.scrollIntoView({behavior:'smooth'});
+  });
+  document.getElementById('searchFlag').addEventListener('click', ()=>{
+    const flagEl = document.getElementById('secretFlag');
+    if (flagEl) {
+      revealArea.innerHTML = '<div class="small">Полезно: найдён элемент с id "secretFlag". Нажмите Reveal hidden, чтобы показать значение.</div>';
+    } else {
+      revealArea.innerHTML = '<div class="small">Флаг не найден.</div>';
+    }
+  });
+
+  document.getElementById('submitFlag').addEventListener('click', ()=>{
+    const val = document.getElementById('flagInput').value.trim();
+    const real = document.getElementById('secretFlag').value;
+    if (!val) { alert('Введите флаг.'); return; }
+    if (val === real) {
+      addReport(5, 'Flag submitted: ' + val);
+      state[5].fixed = true;
+      markPassed(5);
+      alert('Флаг верен! Поздравляем, вы прошли все шаги.');
+      // auto open certificate prompt
+      generateCertificate();
+    } else {
+      alert('Флаг неверен. Попробуйте ещё раз или нажмите Reveal hidden.');
+    }
+  });
+
+  // ---------- Finish / PDF ----------
+  document.getElementById('finishBtn').addEventListener('click', generateCertificate);
+  async function generateCertificate(){
+    try {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({orientation:'landscape', unit:'pt', format:'a4'});
+      // background
+      doc.setFillColor(7,17,32);
+      doc.rect(0,0, doc.internal.pageSize.width, doc.internal.pageSize.height, 'F');
+
+      doc.setTextColor(110,231,255);
+      doc.setFontSize(28);
+      doc.setFont('helvetica','bold');
+      doc.text('Certificate of Excellence — Bug Hunt (HAPPY BDAY!)', 60, 90);
+
+      doc.setFontSize(22);
+      doc.setTextColor(255,255,255);
+      doc.setFont('helvetica','normal');
+      doc.text('This certifies that', 60, 140);
+
+      doc.setFont('helvetica','bold');
+      doc.setFontSize(36);
+      doc.text('Dauren Gultayev', 60, 180);
+
+      doc.setFontSize(14);
+      doc.setFont('helvetica','normal');
+      doc.text(`Has completed the Bug Hunt challenge — ${passed.size}/${TOTAL} steps solved.`, 60, 220);
+
+      const date = new Date();
+      doc.setFontSize(11);
+      doc.text(`Date: ${date.toLocaleDateString()} • Birthday: 14 Oct (24 years)`, 60, 250);
+
+      // list reports
+      doc.setFontSize(10);
+      let y = 280;
+      doc.text('Reports:', 60, y);
+      y += 18;
+      const reports = Array.from(reportsList.querySelectorAll('li')).map(li => li.textContent);
+      if (reports.length === 0) {
+        doc.text('No reports submitted.', 60, y);
+      } else {
+        reports.forEach(r => {
+          const lines = doc.splitTextToSize(r, doc.internal.pageSize.width - 120);
+          doc.text(lines, 60, y);
+          y += lines.length * 12 + 6;
+          if (y > doc.internal.pageSize.height - 100) {
+            doc.addPage();
+            y = 60;
+          }
+        });
+      }
+
+      doc.setFontSize(11);
+      doc.text('Signed by: Islam', doc.internal.pageSize.width - 260, doc.internal.pageSize.height - 120);
+
+      doc.save(`Certificate_Dauren_BugHunt_${date.toISOString().slice(0,10)}.pdf`);
+    } catch(e){
+      console.error(e);
+      alert('Не удалось сгенерировать сертификат. Проверьте подключение к CDN.');
+    }
+  }
+
+  // ---------- load previous state then show step 1 ----------
+  loadState();
+  showStep(1);
+
+  // quick global hint on start
+  console.log('%cDAUREN — HAPPY 24! 🎉\nThis is an interactive step-by-step Bug Hunt. Open each step, follow instructions, use "Inspector"/"Apply patch" where needed. Good luck!', 'color:#9be3ff;font-weight:700');
+
+})();
+</script>
+</body>
+</html>

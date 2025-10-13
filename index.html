@@ -175,62 +175,94 @@
 	  transform: scale(1.1);
 	}
 	
-	/* === ГАЛЕРЕЯ === */
-	.friendship-gallery {
-	  text-align: center;
-	  padding: clamp(60px, 10vw, 120px) 20px;
-	  background: linear-gradient(135deg, #2c3e50, #4ca1af);
-	  color: #fff;
-	}
-	
-	.gallery-title {
-	  font-size: clamp(2rem, 5vw, 2.5rem);
-	  margin-bottom: 50px;
-	  text-shadow: 0 0 15px rgba(255,255,255,0.6);
-	}
-	
-	.photo-line {
-	  display: flex;
-	  justify-content: center;
-	  flex-wrap: wrap;
-	  gap: 24px;
-	}
-	
-	.photo {
-	  width: clamp(140px, 30vw, 220px);
-	  aspect-ratio: 4 / 3;
-	  background: #fff;
-	  border-radius: 10px;
-	  overflow: hidden;
-	  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-	  cursor: pointer;
-	  transform-origin: top center;
-	  animation: swing 5s ease-in-out infinite;
-	  transition: transform 0.4s ease, box-shadow 0.3s;
-	}
-	.photo img, .photo video {
-	  width: 100%;
-	  height: 100%;
-	  object-fit: cover;
-	  display: block;
-	  transition: transform 0.3s ease;
-	}
-	.photo:hover {
-	  transform: scale(1.07) rotate(0deg);
-	  box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-	  animation-play-state: paused;
-	}
-	.photo:hover img, .photo:hover video { transform: scale(1.05); }
-	
-	.caption {
-	  position: absolute;
-	  bottom: 0;
-	  width: 100%;
-	  background: rgba(0,0,0,0.6);
-	  font-size: clamp(0.7rem, 2vw, 0.9rem);
-	  padding: 5px 10px;
-	  box-sizing: border-box;
-	}
+	/* --- Галерея --- */
+    .friendship-gallery {
+      text-align: center;
+      padding: 80px 20px;
+      background: linear-gradient(135deg, #2c3e50, #4ca1af);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gallery-title {
+      font-size: 2.5rem;
+      margin-bottom: 60px;
+      text-shadow: 0 0 15px rgba(255,255,255,0.6);
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .photo-line {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 40px;
+      position: relative;
+    }
+
+    .photo {
+      width: 220px;
+      aspect-ratio: 4 / 3;
+      position: relative;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      cursor: pointer;
+      transform-origin: top center;
+      animation: swing 5s ease-in-out infinite;
+      transition: transform 0.4s ease, box-shadow 0.3s;
+    }
+
+    @keyframes swing {
+      0% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+      100% { transform: rotate(-3deg); }
+    }
+
+    .photo:nth-child(even) { animation-delay: 1s; }
+    .photo img, .photo video {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .photo:hover {
+      transform: scale(1.07) rotate(0deg);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+      animation-play-state: paused;
+    }
+
+    .photo:hover img, .photo:hover video { transform: scale(1.05); }
+
+    .caption {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.6);
+      font-size: 0.9rem;
+      padding: 5px 10px;
+      box-sizing: border-box;
+    }
+
+    .photo::before {
+      content: '';
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      width: 24px;
+      height: 24px;
+      background: #d1a46c;
+      border-radius: 3px;
+      transform: translateX(-50%) rotate(5deg);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+      z-index: 2;
+      animation: clipMove 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes clipMove {
+      from { transform: translateX(-50%) rotate(5deg) translateY(0); }
+      to { transform: translateX(-50%) rotate(-5deg) translateY(3px); }
+    }
 	
 	/* === МОДАЛЬНОЕ ОКНО === */
 	.modal {
@@ -303,42 +335,93 @@
 	  min-height: 150px;
 	}
 	
-	/* === ПЕСНЯ === */
+	/* === Раздел песни === */
 	.song-section {
-	  padding: clamp(60px, 8vw, 120px) 20px;
+	  padding: 120px 20px;
 	  text-align: center;
 	  background: radial-gradient(circle at top left, #000428, #004e92);
 	  color: white;
+	  overflow: hidden;
 	}
-	
+
 	.song-title {
-	  font-size: clamp(2rem, 5vw, 2.8rem);
+	  font-size: 2.8rem;
 	  margin-bottom: 40px;
+	  text-shadow: 0 0 20px rgba(255,255,255,0.8);
+	  animation: glow 3s ease-in-out infinite alternate;
 	}
-	
+
+	@keyframes glow {
+	  from { text-shadow: 0 0 10px #00f, 0 0 20px #0ff; }
+	  to { text-shadow: 0 0 30px #fff, 0 0 60px #0ff; }
+	}
+
 	.song-container {
 	  max-width: 700px;
 	  margin: 0 auto;
 	  background: rgba(255,255,255,0.1);
 	  border-radius: 20px;
-	  padding: clamp(25px, 6vw, 40px);
+	  padding: 40px;
 	  box-shadow: 0 0 40px rgba(0,0,0,0.6);
+	  backdrop-filter: blur(10px);
 	}
-	
+
 	.song-btn {
 	  background: linear-gradient(135deg, #00f, #0ff);
 	  border: none;
 	  padding: 15px 40px;
 	  border-radius: 50px;
-	  font-size: clamp(1rem, 3vw, 1.2rem);
+	  font-size: 1.2rem;
 	  cursor: pointer;
 	  color: #000;
 	  font-weight: bold;
 	  transition: transform 0.3s, box-shadow 0.3s;
 	}
+
 	.song-btn:hover {
 	  transform: scale(1.1);
 	  box-shadow: 0 0 25px #0ff;
+	}
+
+	/* === Тексты караоке === */
+	.lyrics-container {
+	  position: relative;
+	  height: 180px;
+	  margin-top: 50px;
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: center;
+	  overflow: hidden;
+	}
+
+	.lyric-line {
+	  font-size: 1.4rem;
+	  line-height: 1.8;
+	  transition: opacity 0.6s, transform 0.6s;
+	}
+
+	.lyric-prev,
+	.lyric-next {
+	  opacity: 0.4;
+	  font-size: 1.2rem;
+	}
+
+	.lyric-active {
+	  opacity: 1;
+	  font-weight: bold;
+	  font-size: 1.6rem;
+	  text-shadow: 0 0 15px rgba(255,255,255,0.8);
+	  color: #fff;
+	}
+
+	/* === Анимация смены строк === */
+	.shift-up {
+	  animation: shiftUp 0.6s ease forwards;
+	}
+
+	@keyframes shiftUp {
+	  0% { transform: translateY(0); opacity: 1; }
+	  100% { transform: translateY(-40px); opacity: 1; }
 	}
 	
 	/* === ГЛИТЧ-КНОПКА === */
@@ -692,6 +775,7 @@
   </script>
 </body>
 </html>
+
 
 
 

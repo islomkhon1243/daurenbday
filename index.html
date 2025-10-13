@@ -6,339 +6,263 @@
   <title>Поздравление для Даурена</title>
   <style>
     html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: 'Arial Black', sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      overflow-x: hidden;
-    }
-
-    /* --- Главный экран --- */
-    .container {
-      text-align: center;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      animation: fadeIn 2s ease-in-out;
-      transition: opacity 0.8s ease;
-    }
-
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-      animation: textGlow 2s infinite alternate;
-    }
-
-    .typing {
-      font-size: 1.5rem;
-      white-space: pre-line;
-      border-right: 3px solid #fff;
-      display: inline-block;
-      animation: caret 0.7s infinite;
-      max-width: 90%;
-    }
-
-    @keyframes caret { 50% { border-color: transparent; } }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes textGlow { from { text-shadow: 0 0 10px #00f, 0 0 20px #0ff; } to { text-shadow: 0 0 20px #ff0, 0 0 40px #f0f; } }
-
-    .big-text {
-      margin-top: 30px;
-      font-size: 2.5rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      animation: boom 1s ease-in-out infinite alternate;
-    }
-
-    @keyframes boom { from { transform: scale(1); color: #ff0; } to { transform: scale(1.1); color: #f00; } }
-
-    .btn {
-      margin-top: 40px;
-      padding: 15px 30px;
-      font-size: 1.2rem;
-      background: #ff0;
-      color: #000;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: transform 0.2s, background 0.3s;
-    }
-
-    .btn:hover { transform: scale(1.1); background: #ffa500; }
-
-    /* --- Кнопка музыки --- */
-    .music-btn {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      background: rgba(255,255,255,0.2);
-      border: 2px solid #fff;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      color: #fff;
-      cursor: pointer;
-      z-index: 200;
-      transition: transform 0.3s;
-    }
-    .music-btn:hover { transform: scale(1.1); }
-
-    /* --- Конфетти --- */
-    .confetti {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      top: -10px;
-      animation: fall 3s linear infinite;
-    }
-    @keyframes fall { to { transform: translateY(100vh) rotate(360deg); } }
-
-    /* --- Раздел Даурен --- */
+	  
+	body {
+	  margin: 0;
+	  font-family: 'Arial Black', sans-serif;
+	  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+	  color: #fff;
+	  overflow-x: hidden;
+	}
+	
+	/* === ГЛАВНЫЙ ЭКРАН === */
+	.container {
+	  text-align: center;
+	  min-height: 100vh;
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: center;
+	  align-items: center;
+	  animation: fadeIn 2s ease-in-out;
+	  transition: opacity 0.8s ease;
+	  padding: 0 16px;
+	}
+	
+	h1 {
+	  font-size: clamp(2rem, 5vw, 3.5rem);
+	  margin-bottom: 20px;
+	  animation: textGlow 2s infinite alternate;
+	}
+	
+	.typing {
+	  font-size: clamp(1rem, 3.5vw, 1.6rem);
+	  white-space: pre-line;
+	  border-right: 3px solid #fff;
+	  display: inline-block;
+	  animation: caret 0.7s infinite;
+	  max-width: 90%;
+	}
+	
+	@keyframes caret { 50% { border-color: transparent; } }
+	@keyframes fadeIn { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+	@keyframes textGlow { from { text-shadow: 0 0 10px #00f, 0 0 20px #0ff; } to { text-shadow: 0 0 20px #ff0, 0 0 40px #f0f; } }
+	
+	.big-text {
+	  margin-top: 30px;
+	  font-size: clamp(1.5rem, 5vw, 2.5rem);
+	  font-weight: bold;
+	  text-transform: uppercase;
+	  animation: boom 1s ease-in-out infinite alternate;
+	}
+	
+	@keyframes boom { from { transform: scale(1); color: #ff0; } to { transform: scale(1.1); color: #f00; } }
+	
+	.btn {
+	  margin-top: 40px;
+	  padding: 12px 24px;
+	  font-size: clamp(1rem, 3vw, 1.2rem);
+	  background: #ff0;
+	  color: #000;
+	  border: none;
+	  border-radius: 10px;
+	  cursor: pointer;
+	  transition: transform 0.2s, background 0.3s;
+	}
+	.btn:hover { transform: scale(1.1); background: #ffa500; }
+	
+	/* === КНОПКА МУЗЫКИ === */
+	.music-btn {
+	  position: fixed;
+	  top: 16px;
+	  left: 16px;
+	  background: rgba(255,255,255,0.2);
+	  border: 2px solid #fff;
+	  border-radius: 50%;
+	  width: 50px;
+	  height: 50px;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  font-size: 24px;
+	  color: #fff;
+	  cursor: pointer;
+	  z-index: 200;
+	  transition: transform 0.3s;
+	}
+	.music-btn:hover { transform: scale(1.1); }
+	
+	/* === РАЗДЕЛ ДАУРЕН === */
 	.about-dauren {
-	  padding: 100px 20px;
+	  padding: clamp(60px, 10vw, 120px) 20px;
 	  background: linear-gradient(135deg, #1e3c72, #2a5298);
 	  position: relative;
-	  /* ⚠️ overflow убираем, иначе sticky ломается */
 	  overflow: visible;
 	  text-align: center;
 	}
-
+	
 	.about-title {
-	  font-size: 2.8rem;
-	  margin-bottom: 50px;
-	  text-align: center;
+	  font-size: clamp(2rem, 5vw, 2.8rem);
+	  margin-bottom: 40px;
 	  animation: fadeIn 2s ease;
 	  text-shadow: 0 0 20px rgba(255,255,255,0.7);
 	}
-
-	/* Контейнер — создаёт высоту под текст */
+	
 	.about-container {
 	  display: flex;
 	  justify-content: center;
 	  align-items: flex-start;
-	  gap: 60px;
+	  gap: 40px;
 	  max-width: 1200px;
 	  margin: 0 auto;
 	  position: relative;
-	  padding-bottom: 100px;
+	  flex-wrap: wrap;
 	}
-
-	/* Фото — липнет к экрану и двигается со скроллом текста */
+	
 	.about-photo {
 	  position: sticky;
-	  top: 120px; /* регулируй, насколько низко она фиксируется */
-	  flex: 0 0 350px;
-	  height: 350px;
+	  top: 100px;
+	  flex: 0 0 clamp(220px, 30vw, 350px);
+	  height: clamp(220px, 30vw, 350px);
 	  border-radius: 50%;
 	  overflow: hidden;
 	  box-shadow: 0 0 30px rgba(0,0,0,0.6);
 	  animation: float 4s ease-in-out infinite;
-	  align-self: flex-start;
 	}
-
+	
 	@keyframes float {
 	  0%, 100% { transform: translateY(0); }
 	  50% { transform: translateY(-15px); }
 	}
-
+	
 	.about-photo img {
 	  width: 100%;
 	  height: 100%;
 	  object-fit: cover;
 	}
-
-	/* Текст рядом */
+	
 	.about-text {
 	  flex: 1;
-	  font-size: 1.2rem;
+	  font-size: clamp(1rem, 2.5vw, 1.2rem);
 	  line-height: 1.8;
 	  background: rgba(255,255,255,0.1);
-	  padding: 25px 35px;
+	  padding: clamp(20px, 4vw, 35px);
 	  border-radius: 15px;
 	  box-shadow: 0 0 15px rgba(0,0,0,0.4);
 	  color: #fff;
 	  text-align: left;
-	  min-height: 130vh; /* 👈 добавляем высоту, чтобы фото скроллилось */
 	}
-
-	/* Интересы */
+	
+	/* === ИНТЕРЕСЫ === */
 	.interests {
 	  margin-top: 30px;
 	  display: flex;
 	  flex-wrap: wrap;
 	  gap: 15px;
+	  justify-content: center;
 	}
-
+	
 	.interest {
 	  background: rgba(255,255,255,0.15);
 	  border: 1px solid rgba(255,255,255,0.2);
 	  border-radius: 20px;
-	  padding: 10px 20px;
-	  font-size: 1rem;
+	  padding: 8px 18px;
+	  font-size: clamp(0.8rem, 2.5vw, 1rem);
 	  transition: background 0.3s, transform 0.3s;
 	}
-
 	.interest:hover {
 	  background: #ff0;
 	  color: #000;
 	  transform: scale(1.1);
 	}
-
-	/* Адаптив */
-	@media (max-width: 768px) {
-	  .about-container {
-		flex-direction: column;
-		align-items: center;
-	  }
-
-	  .about-photo {
-		position: static;
-		margin-bottom: 30px;
-	  }
-
-	  .about-text {
-		min-height: auto;
-		text-align: center;
-	  }
-	}
-
-    /* --- Галерея --- */
-    .friendship-gallery {
-      text-align: center;
-      padding: 80px 20px;
-      background: linear-gradient(135deg, #2c3e50, #4ca1af);
-      color: #fff;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .gallery-title {
-      font-size: 2.5rem;
-      margin-bottom: 60px;
-      text-shadow: 0 0 15px rgba(255,255,255,0.6);
-      animation: fadeIn 2s ease-in-out;
-    }
-
-    .photo-line {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 40px;
-      position: relative;
-    }
-
-    .photo {
-      width: 220px;
-      aspect-ratio: 4 / 3;
-      position: relative;
-      background: #fff;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-      cursor: pointer;
-      transform-origin: top center;
-      animation: swing 5s ease-in-out infinite;
-      transition: transform 0.4s ease, box-shadow 0.3s;
-    }
-
-    @keyframes swing {
-      0% { transform: rotate(-3deg); }
-      50% { transform: rotate(3deg); }
-      100% { transform: rotate(-3deg); }
-    }
-
-    .photo:nth-child(even) { animation-delay: 1s; }
-    .photo img, .photo video {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-      transition: transform 0.3s ease;
-    }
-
-    .photo:hover {
-      transform: scale(1.07) rotate(0deg);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-      animation-play-state: paused;
-    }
-
-    .photo:hover img, .photo:hover video { transform: scale(1.05); }
-
-    .caption {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      background: rgba(0,0,0,0.6);
-      font-size: 0.9rem;
-      padding: 5px 10px;
-      box-sizing: border-box;
-    }
-
-    .photo::before {
-      content: '';
-      position: absolute;
-      top: -18px;
-      left: 50%;
-      width: 24px;
-      height: 24px;
-      background: #d1a46c;
-      border-radius: 3px;
-      transform: translateX(-50%) rotate(5deg);
-      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
-      z-index: 2;
-      animation: clipMove 2s ease-in-out infinite alternate;
-    }
-
-    @keyframes clipMove {
-      from { transform: translateX(-50%) rotate(5deg) translateY(0); }
-      to { transform: translateX(-50%) rotate(-5deg) translateY(3px); }
-    }
-
-    /* --- Модалка и финал --- */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 100;
-      inset: 0;
-      background: rgba(0,0,0,0.9);
-      justify-content: center;
-      align-items: center;
-      animation: fadeIn 0.4s ease;
-    }
-
-    .modal-content {
-      width: 90vw;
-      height: 90vh;
-      object-fit: contain;
-      border-radius: 10px;
-      animation: zoomIn 0.4s ease;
-    }
-
-    @keyframes zoomIn {
-      from { transform: scale(0.8); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    .close {
-      position: absolute;
-      top: 20px;
-      right: 40px;
-      color: #fff;
-      font-size: 40px;
-      cursor: pointer;
-      transition: 0.3s;
-      z-index: 101;
-    }
-    .close:hover { color: #f00; }
 	
-	/* --- Раздел Моё поздравление --- */
+	/* === ГАЛЕРЕЯ === */
+	.friendship-gallery {
+	  text-align: center;
+	  padding: clamp(60px, 10vw, 120px) 20px;
+	  background: linear-gradient(135deg, #2c3e50, #4ca1af);
+	  color: #fff;
+	}
+	
+	.gallery-title {
+	  font-size: clamp(2rem, 5vw, 2.5rem);
+	  margin-bottom: 50px;
+	  text-shadow: 0 0 15px rgba(255,255,255,0.6);
+	}
+	
+	.photo-line {
+	  display: flex;
+	  justify-content: center;
+	  flex-wrap: wrap;
+	  gap: 24px;
+	}
+	
+	.photo {
+	  width: clamp(140px, 30vw, 220px);
+	  aspect-ratio: 4 / 3;
+	  background: #fff;
+	  border-radius: 10px;
+	  overflow: hidden;
+	  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+	  cursor: pointer;
+	  transform-origin: top center;
+	  animation: swing 5s ease-in-out infinite;
+	  transition: transform 0.4s ease, box-shadow 0.3s;
+	}
+	.photo img, .photo video {
+	  width: 100%;
+	  height: 100%;
+	  object-fit: cover;
+	  display: block;
+	  transition: transform 0.3s ease;
+	}
+	.photo:hover {
+	  transform: scale(1.07) rotate(0deg);
+	  box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+	  animation-play-state: paused;
+	}
+	.photo:hover img, .photo:hover video { transform: scale(1.05); }
+	
+	.caption {
+	  position: absolute;
+	  bottom: 0;
+	  width: 100%;
+	  background: rgba(0,0,0,0.6);
+	  font-size: clamp(0.7rem, 2vw, 0.9rem);
+	  padding: 5px 10px;
+	  box-sizing: border-box;
+	}
+	
+	/* === МОДАЛЬНОЕ ОКНО === */
+	.modal {
+	  display: none;
+	  position: fixed;
+	  inset: 0;
+	  background: rgba(0,0,0,0.9);
+	  justify-content: center;
+	  align-items: center;
+	  animation: fadeIn 0.4s ease;
+	}
+	.modal-content {
+	  width: 90vw;
+	  height: 90vh;
+	  object-fit: contain;
+	  border-radius: 10px;
+	}
+	.close {
+	  position: absolute;
+	  top: 20px;
+	  right: 40px;
+	  color: #fff;
+	  font-size: 40px;
+	  cursor: pointer;
+	  transition: 0.3s;
+	}
+	.close:hover { color: #f00; }
+	
+	/* === МОЁ ПОЗДРАВЛЕНИЕ === */
 	.my-congrats {
 	  position: relative;
-	  height: 200vh;
+	  min-height: 200vh;
 	  display: flex;
 	  justify-content: center;
 	  align-items: center;
@@ -348,280 +272,111 @@
 	  font-family: 'Orbitron', sans-serif;
 	  text-transform: uppercase;
 	  letter-spacing: 2px;
+	  padding: 40px 20px;
 	}
-
-	/* Голографическая рамка */
+	
 	.holo-frame {
-	  position: relative;
-	  width: 80%;
+	  width: 90%;
 	  max-width: 900px;
 	  border: 2px solid rgba(0,255,255,0.4);
 	  border-radius: 20px;
 	  box-shadow: 0 0 40px rgba(0,255,255,0.3);
-	  padding: 60px 40px;
+	  padding: clamp(30px, 6vw, 60px);
 	  background: rgba(0, 10, 30, 0.5);
 	  backdrop-filter: blur(8px);
 	  animation: holoGlow 3s infinite alternate;
 	}
-
-	@keyframes holoGlow {
-	  from { box-shadow: 0 0 20px rgba(0,255,255,0.3); border-color: rgba(0,255,255,0.2); }
-	  to { box-shadow: 0 0 40px rgba(0,255,255,0.7); border-color: rgba(0,255,255,0.6); }
-	}
-
+	
 	.holo-title {
-	  font-size: 2.5rem;
+	  font-size: clamp(1.8rem, 4vw, 2.5rem);
 	  text-align: center;
-	  margin-bottom: 40px;
+	  margin-bottom: 30px;
 	  color: #00ffff;
-	  text-shadow: 0 0 20px #00ffff, 0 0 40px #0077ff;
-	  animation: titlePulse 3s infinite alternate;
 	}
-
-	@keyframes titlePulse {
-	  from { opacity: 0.8; transform: scale(1); }
-	  to { opacity: 1; transform: scale(1.05); }
-	}
-
-	/* Центральный блок */
+	
 	.holo-core {
-	  position: relative;
 	  text-align: center;
-	  font-size: 1.4rem;
+	  font-size: clamp(1rem, 3vw, 1.4rem);
 	  line-height: 1.8;
 	  color: #0ff;
 	  text-shadow: 0 0 10px #00faff;
-	  min-height: 200px;
-	}
-
-	/* Эффект пульсирующего кольца */
-	.pulse-ring {
-	  position: absolute;
-	  top: 50%;
-	  left: 50%;
-	  width: 200px;
-	  height: 200px;
-	  border: 3px solid rgba(0,255,255,0.4);
-	  border-radius: 50%;
-	  transform: translate(-50%, -50%);
-	  animation: pulse 2.5s ease-out infinite;
-	}
-
-	@keyframes pulse {
-	  0% { transform: translate(-50%, -50%) scale(0.7); opacity: 1; }
-	  100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; }
-	}
-
-	/* Цифровой шум поверх */
-	.my-congrats::after {
-	  content: "";
-	  position: absolute;
-	  inset: 0;
-	  background: repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, transparent 2px);
-	  mix-blend-mode: overlay;
-	  animation: noiseMove 1s linear infinite;
-	}
-
-	@keyframes noiseMove {
-	  0% { background-position: 0 0; }
-	  100% { background-position: 0 10px; }
+	  min-height: 150px;
 	}
 	
-	/* === Раздел песни === */
+	/* === ПЕСНЯ === */
 	.song-section {
-	  padding: 120px 20px;
+	  padding: clamp(60px, 8vw, 120px) 20px;
 	  text-align: center;
 	  background: radial-gradient(circle at top left, #000428, #004e92);
 	  color: white;
-	  overflow: hidden;
 	}
-
+	
 	.song-title {
-	  font-size: 2.8rem;
+	  font-size: clamp(2rem, 5vw, 2.8rem);
 	  margin-bottom: 40px;
-	  text-shadow: 0 0 20px rgba(255,255,255,0.8);
-	  animation: glow 3s ease-in-out infinite alternate;
 	}
-
-	@keyframes glow {
-	  from { text-shadow: 0 0 10px #00f, 0 0 20px #0ff; }
-	  to { text-shadow: 0 0 30px #fff, 0 0 60px #0ff; }
-	}
-
+	
 	.song-container {
 	  max-width: 700px;
 	  margin: 0 auto;
 	  background: rgba(255,255,255,0.1);
 	  border-radius: 20px;
-	  padding: 40px;
+	  padding: clamp(25px, 6vw, 40px);
 	  box-shadow: 0 0 40px rgba(0,0,0,0.6);
-	  backdrop-filter: blur(10px);
 	}
-
+	
 	.song-btn {
 	  background: linear-gradient(135deg, #00f, #0ff);
 	  border: none;
 	  padding: 15px 40px;
 	  border-radius: 50px;
-	  font-size: 1.2rem;
+	  font-size: clamp(1rem, 3vw, 1.2rem);
 	  cursor: pointer;
 	  color: #000;
 	  font-weight: bold;
 	  transition: transform 0.3s, box-shadow 0.3s;
 	}
-
 	.song-btn:hover {
 	  transform: scale(1.1);
 	  box-shadow: 0 0 25px #0ff;
 	}
-
-	/* === Тексты караоке === */
-	.lyrics-container {
-	  position: relative;
-	  height: 180px;
-	  margin-top: 50px;
-	  display: flex;
-	  flex-direction: column;
-	  justify-content: center;
-	  overflow: hidden;
-	}
-
-	.lyric-line {
-	  font-size: 1.4rem;
-	  line-height: 1.8;
-	  transition: opacity 0.6s, transform 0.6s;
-	}
-
-	.lyric-prev,
-	.lyric-next {
-	  opacity: 0.4;
-	  font-size: 1.2rem;
-	}
-
-	.lyric-active {
-	  opacity: 1;
-	  font-weight: bold;
-	  font-size: 1.6rem;
-	  text-shadow: 0 0 15px rgba(255,255,255,0.8);
-	  color: #fff;
-	}
-
-	/* === Анимация смены строк === */
-	.shift-up {
-	  animation: shiftUp 0.6s ease forwards;
-	}
-
-	@keyframes shiftUp {
-	  0% { transform: translateY(0); opacity: 1; }
-	  100% { transform: translateY(-40px); opacity: 1; }
-	}
 	
-	/* === Раздел с глитч-кнопкой === */
+	/* === ГЛИТЧ-КНОПКА === */
 	.glitch-section {
-	  position: relative;
 	  background: linear-gradient(135deg, #1b2735, #090a0f);
 	  color: #fff;
 	  text-align: center;
-	  padding: 100px 20px;
-	  overflow: hidden;
+	  padding: clamp(60px, 10vw, 120px) 20px;
 	}
-
-	/* Заголовок */
+	
 	.glitch-section h2 {
-	  font-size: 2rem;
+	  font-size: clamp(1.5rem, 4vw, 2rem);
 	  margin-bottom: 30px;
 	  text-shadow: 0 0 15px #ff9900, 0 0 30px #ff6600;
-	  letter-spacing: 1px;
-	  animation: flicker 2.5s infinite alternate;
 	}
-
-	/* Кнопка с глитч-эффектом */
+	
 	.glitch-btn {
-	  position: relative;
-	  display: inline-block;
-	  padding: 16px 40px;
-	  font-size: 1.2rem;
-	  font-weight: 600;
-	  color: #fff;
-	  background: linear-gradient(90deg, #ff6b00, #ffbb00);
-	  border: none;
+	  padding: 14px 36px;
+	  font-size: clamp(1rem, 3vw, 1.2rem);
 	  border-radius: 10px;
-	  cursor: pointer;
-	  overflow: hidden;
-	  transition: transform 0.2s ease, box-shadow 0.3s ease;
-	  text-transform: uppercase;
-	  box-shadow: 0 0 15px rgba(255, 153, 0, 0.6);
-	}
-
-	.glitch-btn:hover {
-	  transform: scale(1.05);
-	  box-shadow: 0 0 25px rgba(255, 153, 0, 0.8);
-	}
-
-	/* Глитч-слои */
-	.glitch-btn .glitch-layer {
-	  content: "";
-	  position: absolute;
-	  top: 0;
-	  left: 0;
-	  width: 100%;
-	  height: 100%;
 	  background: linear-gradient(90deg, #ff6b00, #ffbb00);
-	  opacity: 0.5;
-	  mix-blend-mode: overlay;
-	  animation: glitchShift 2s infinite linear alternate-reverse;
+	  color: #fff;
+	  border: none;
+	  cursor: pointer;
+	  transition: transform 0.2s ease;
 	}
-
-	.glitch-btn .glitch-layer:nth-child(2) {
-	  animation-delay: 1s;
+	.glitch-btn:hover { transform: scale(1.05); }
+	
+	/* === ПОДВАЛ === */
+	footer {
+	  text-align: center;
+	  padding: 60px 20px;
+	  background: #111;
 	}
-
-	/* === Анимации === */
-	@keyframes glitchShift {
-	  0% {
-		clip-path: inset(10% 0 85% 0);
-		transform: translate(0);
-	  }
-	  20% {
-		clip-path: inset(85% 0 10% 0);
-		transform: translate(-5px, 2px);
-	  }
-	  40% {
-		clip-path: inset(40% 0 50% 0);
-		transform: translate(3px, -3px);
-	  }
-	  60% {
-		clip-path: inset(70% 0 20% 0);
-		transform: translate(-3px, 1px);
-	  }
-	  80% {
-		clip-path: inset(25% 0 65% 0);
-		transform: translate(5px, -2px);
-	  }
-	  100% {
-		clip-path: inset(0 0 0 0);
-		transform: translate(0);
-	  }
-	}
-
-	/* Мерцание заголовка */
-	@keyframes flicker {
-	  0%, 18%, 22%, 25%, 53%, 57%, 100% {
-		opacity: 1;
-	  }
-	  20%, 24%, 55% {
-		opacity: 0.3;
-	  }
-	}
-
-
-    footer {
-      text-align: center;
-      padding: 60px 20px;
-      background: #111;
-    }
-
-    footer h2 { font-size: 2rem; animation: textGlow 2s infinite alternate; }
+	footer h2 {
+	  font-size: clamp(1.5rem, 4vw, 2rem);
+	  animation: textGlow 2s infinite alternate;
+	}	
   </style>
 </head>
 <body>
@@ -680,13 +435,13 @@
   <section class="friendship-gallery" id="gallery">
     <h2 class="gallery-title">История нашей дружбы</h2>
     <div class="photo-line">
-      <div class="photo"><img src="./img/photo1.jpg" alt=""><div class="caption">Первая дни в МУИТе</div></div>
+      <div class="photo"><img src="./img/photo1.jpg" alt=""><div class="caption">Первые дни в МУИТе</div></div>
       <div class="photo"><img src="./img/photo2.jpg" alt=""><div class="caption">Знакомство с шарагой</div></div>
       <div class="photo"><video src="./video/video1.mp4" autoplay muted loop></video><div class="caption">Весёлые моменты</div></div>
       <div class="photo"><img src="./img/photo3.jpg" alt=""><div class="caption">Сумасшедшие будние</div></div>
       <div class="photo"><video src="./video/video2.mp4" autoplay muted loop></video><div class="caption">Избавляемся от шлака</div></div>
       <div class="photo"><img src="./img/photo4.jpg" alt=""><div class="caption">Настоящий он вырывается</div></div>
-	  <div class="photo"><img src="./img/photo5.jpg" alt=""><div class="caption">Усердно работали над хуеломкой</div></div>
+	  <div class="photo"><img src="./img/photo5.jpg" alt=""><div class="caption">Усердно работали над хуеломкой(дипломкой)</div></div>
 	  <div class="photo"><img src="./img/photo6.jpg" alt=""><div class="caption">Ебать, че за взгляд, ауф</div></div>
 	  <div class="photo"><img src="./img/photo7.jpg" alt=""><div class="caption">Опять эти, два дебила</div></div>
 	  <div class="photo"><img src="./img/photo8.jpg" alt=""><div class="caption">Вылупился мило</div></div>
@@ -707,12 +462,12 @@
 	  <div class="photo"><img src="./img/photo23.jpg" alt=""><div class="caption">Эх, душевные прогулки летом</div></div>
 	  <div class="photo"><img src="./img/photo24.jpg" alt=""><div class="caption">Наконец-то, выпустили</div></div>
 	  <div class="photo"><img src="./img/photo25.jpg" alt=""><div class="caption">Bombastic side eye</div></div>
-	  <div class="photo"><img src="./img/photo1.png" alt=""><div class="caption">Видел маи бицепсики</div></div>
+	  <div class="photo"><img src="./img/photo1.png" alt=""><div class="caption">Видал маи бицепсики?!</div></div>
 	  <div class="photo"><img src="./img/photo2.png" alt=""><div class="caption">У всех gross face</div></div>
 	  <div class="photo"><img src="./img/photo3.png" alt=""><div class="caption">Сохнут по нему, аж засмушался</div></div>
 	  <div class="photo"><img src="./img/photo4.png" alt=""><div class="caption">В обнимку, ммм</div></div>
 	  <div class="photo"><img src="./img/photo5.png" alt=""><div class="caption">Че лыбишься?(улыбайся чаще)</div></div>
-	  <div class="photo"><img src="./img/photo6.png" alt=""><div class="caption">Упс, папарацции</div></div>
+	  <div class="photo"><img src="./img/photo6.png" alt=""><div class="caption">Упс, папарацци</div></div>
     </div>
   </section>
 
@@ -937,5 +692,6 @@
   </script>
 </body>
 </html>
+
 
 

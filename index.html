@@ -1,834 +1,96 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Поздравление для Даурена</title>
-  <style>
-    html { scroll-behavior: smooth; }
-	  
-	body {
-	  margin: 0;
-	  font-family: 'Arial Black', sans-serif;
-	  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-	  color: #fff;
-	  overflow-x: hidden;
-	}
-	
-	/* === ГЛАВНЫЙ ЭКРАН === */
-	.container {
-	  text-align: center;
-	  min-height: 100vh;
-	  display: flex;
-	  flex-direction: column;
-	  justify-content: center;
-	  align-items: center;
-	  animation: fadeIn 2s ease-in-out;
-	  transition: opacity 0.8s ease;
-	  padding: 0 16px;
-	}
-	
-	h1 {
-	  font-size: clamp(2rem, 5vw, 3.5rem);
-	  margin-bottom: 20px;
-	  animation: textGlow 2s infinite alternate;
-	}
-	
-	.typing {
-	  font-size: clamp(1rem, 3.5vw, 1.6rem);
-	  white-space: pre-line;
-	  border-right: 3px solid #fff;
-	  display: inline-block;
-	  animation: caret 0.7s infinite;
-	  max-width: 90%;
-	}
-	
-	@keyframes caret { 50% { border-color: transparent; } }
-	@keyframes fadeIn { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
-	@keyframes textGlow { from { text-shadow: 0 0 10px #00f, 0 0 20px #0ff; } to { text-shadow: 0 0 20px #ff0, 0 0 40px #f0f; } }
-	
-	.big-text {
-	  margin-top: 30px;
-	  font-size: clamp(1.5rem, 5vw, 2.5rem);
-	  font-weight: bold;
-	  text-transform: uppercase;
-	  animation: boom 1s ease-in-out infinite alternate;
-	}
-	
-	@keyframes boom { from { transform: scale(1); color: #ff0; } to { transform: scale(1.1); color: #f00; } }
-	
-	.btn {
-	  margin-top: 40px;
-	  padding: 12px 24px;
-	  font-size: clamp(1rem, 3vw, 1.2rem);
-	  background: #ff0;
-	  color: #000;
-	  border: none;
-	  border-radius: 10px;
-	  cursor: pointer;
-	  transition: transform 0.2s, background 0.3s;
-	}
-	.btn:hover { transform: scale(1.1); background: #ffa500; }
-	
-	/* === КНОПКА МУЗЫКИ === */
-	.music-btn {
-	  position: fixed;
-	  top: 16px;
-	  left: 16px;
-	  background: rgba(255,255,255,0.2);
-	  border: 2px solid #fff;
-	  border-radius: 50%;
-	  width: 50px;
-	  height: 50px;
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	  font-size: 24px;
-	  color: #fff;
-	  cursor: pointer;
-	  z-index: 200;
-	  transition: transform 0.3s;
-	}
-	.music-btn:hover { transform: scale(1.1); }
-	
-	/* === РАЗДЕЛ ДАУРЕН === */
-	.about-dauren {
-	  padding: clamp(60px, 10vw, 120px) 20px;
-	  background: linear-gradient(135deg, #1e3c72, #2a5298);
-	  position: relative;
-	  overflow: visible;
-	  text-align: center;
-	}
-	
-	.about-title {
-	  font-size: clamp(2rem, 5vw, 2.8rem);
-	  margin-bottom: 40px;
-	  animation: fadeIn 2s ease;
-	  text-shadow: 0 0 20px rgba(255,255,255,0.7);
-	}
-	
-	.about-container {
-	  display: flex;
-	  justify-content: center;
-	  align-items: flex-start;
-	  gap: 40px;
-	  max-width: 1200px;
-	  margin: 0 auto;
-	  position: relative;
-	  flex-wrap: wrap;
-	}
-	
-	.about-photo {
-	  position: sticky;
-	  top: 100px;
-	  flex: 0 0 clamp(220px, 30vw, 350px);
-	  height: clamp(220px, 30vw, 350px);
-	  border-radius: 50%;
-	  overflow: hidden;
-	  box-shadow: 0 0 30px rgba(0,0,0,0.6);
-	  animation: float 4s ease-in-out infinite;
-	}
-	
-	@keyframes float {
-	  0%, 100% { transform: translateY(0); }
-	  50% { transform: translateY(-15px); }
-	}
-	
-	.about-photo img {
-	  width: 100%;
-	  height: 100%;
-	  object-fit: cover;
-	}
-	
-	.about-text {
-	  flex: 1;
-	  font-size: clamp(1rem, 2.5vw, 1.2rem);
-	  line-height: 1.8;
-	  background: rgba(255,255,255,0.1);
-	  padding: clamp(20px, 4vw, 35px);
-	  border-radius: 15px;
-	  box-shadow: 0 0 15px rgba(0,0,0,0.4);
-	  color: #fff;
-	  text-align: left;
-	}
-	
-	/* === ИНТЕРЕСЫ === */
-	.interests {
-	  margin-top: 30px;
-	  display: flex;
-	  flex-wrap: wrap;
-	  gap: 15px;
-	  justify-content: center;
-	}
-	
-	.interest {
-	  background: rgba(255,255,255,0.15);
-	  border: 1px solid rgba(255,255,255,0.2);
-	  border-radius: 20px;
-	  padding: 8px 18px;
-	  font-size: clamp(0.8rem, 2.5vw, 1rem);
-	  transition: background 0.3s, transform 0.3s;
-	}
-	.interest:hover {
-	  background: #ff0;
-	  color: #000;
-	  transform: scale(1.1);
-	}
-	
-	/* --- Галерея --- */
-    .friendship-gallery {
-      text-align: center;
-      padding: 80px 20px;
-      background: linear-gradient(135deg, #2c3e50, #4ca1af);
-      color: #fff;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .gallery-title {
-      font-size: 2.5rem;
-      margin-bottom: 60px;
-      text-shadow: 0 0 15px rgba(255,255,255,0.6);
-      animation: fadeIn 2s ease-in-out;
-    }
-
-    .photo-line {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 40px;
-      position: relative;
-    }
-
-    .photo {
-      width: 220px;
-      aspect-ratio: 4 / 3;
-      position: relative;
-      background: #fff;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-      cursor: pointer;
-      transform-origin: top center;
-      animation: swing 5s ease-in-out infinite;
-      transition: transform 0.4s ease, box-shadow 0.3s;
-    }
-
-    @keyframes swing {
-      0% { transform: rotate(-3deg); }
-      50% { transform: rotate(3deg); }
-      100% { transform: rotate(-3deg); }
-    }
-
-    .photo:nth-child(even) { animation-delay: 1s; }
-    .photo img, .photo video {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-      transition: transform 0.3s ease;
-    }
-
-    .photo:hover {
-      transform: scale(1.07) rotate(0deg);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-      animation-play-state: paused;
-    }
-
-    .photo:hover img, .photo:hover video { transform: scale(1.05); }
-
-    .caption {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      background: rgba(0,0,0,0.6);
-      font-size: 0.9rem;
-      padding: 5px 10px;
-      box-sizing: border-box;
-    }
-
-    .photo::before {
-      content: '';
-      position: absolute;
-      top: -18px;
-      left: 50%;
-      width: 24px;
-      height: 24px;
-      background: #d1a46c;
-      border-radius: 3px;
-      transform: translateX(-50%) rotate(5deg);
-      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
-      z-index: 2;
-      animation: clipMove 2s ease-in-out infinite alternate;
-    }
-
-    @keyframes clipMove {
-      from { transform: translateX(-50%) rotate(5deg) translateY(0); }
-      to { transform: translateX(-50%) rotate(-5deg) translateY(3px); }
-    }
-	
-	/* === МОДАЛЬНОЕ ОКНО === */
-	.modal {
-	  display: none;
-	  position: fixed;
-	  inset: 0;
-	  background: rgba(0,0,0,0.9);
-	  justify-content: center;
-	  align-items: center;
-	  animation: fadeIn 0.4s ease;
-	}
-	.modal-content {
-	  width: 90vw;
-	  height: 90vh;
-	  object-fit: contain;
-	  border-radius: 10px;
-	}
-	.close {
-	  position: absolute;
-	  top: 20px;
-	  right: 40px;
-	  color: #fff;
-	  font-size: 40px;
-	  cursor: pointer;
-	  transition: 0.3s;
-	}
-	.close:hover { color: #f00; }
-	
-	/* === МОЁ ПОЗДРАВЛЕНИЕ === */
-	.my-congrats {
-	  position: relative;
-	  min-height: 200vh;
-	  display: flex;
-	  justify-content: center;
-	  align-items: center;
-	  background: radial-gradient(circle at center, #050a20 0%, #000 100%);
-	  overflow: hidden;
-	  color: #0ff;
-	  font-family: 'Orbitron', sans-serif;
-	  text-transform: uppercase;
-	  letter-spacing: 2px;
-	  padding: 40px 20px;
-	}
-	
-	.holo-frame {
-	  width: 90%;
-	  max-width: 900px;
-	  border: 2px solid rgba(0,255,255,0.4);
-	  border-radius: 20px;
-	  box-shadow: 0 0 40px rgba(0,255,255,0.3);
-	  padding: clamp(30px, 6vw, 60px);
-	  background: rgba(0, 10, 30, 0.5);
-	  backdrop-filter: blur(8px);
-	  animation: holoGlow 3s infinite alternate;
-	}
-	
-	.holo-title {
-	  font-size: clamp(1.8rem, 4vw, 2.5rem);
-	  text-align: center;
-	  margin-bottom: 30px;
-	  color: #00ffff;
-	}
-	
-	.holo-core {
-	  text-align: center;
-	  font-size: clamp(1rem, 3vw, 1.4rem);
-	  line-height: 1.8;
-	  color: #0ff;
-	  text-shadow: 0 0 10px #00faff;
-	  min-height: 150px;
-	}
-	
-	/* === Раздел песни === */
-	.song-section {
-	  padding: 120px 20px;
-	  text-align: center;
-	  background: radial-gradient(circle at top left, #000428, #004e92);
-	  color: white;
-	  overflow: hidden;
-	}
-
-	.song-title {
-	  font-size: 2.8rem;
-	  margin-bottom: 40px;
-	  text-shadow: 0 0 20px rgba(255,255,255,0.8);
-	  animation: glow 3s ease-in-out infinite alternate;
-	}
-
-	@keyframes glow {
-	  from { text-shadow: 0 0 10px #00f, 0 0 20px #0ff; }
-	  to { text-shadow: 0 0 30px #fff, 0 0 60px #0ff; }
-	}
-
-	.song-container {
-	  max-width: 700px;
-	  margin: 0 auto;
-	  background: rgba(255,255,255,0.1);
-	  border-radius: 20px;
-	  padding: 40px;
-	  box-shadow: 0 0 40px rgba(0,0,0,0.6);
-	  backdrop-filter: blur(10px);
-	}
-
-	.song-btn {
-	  background: linear-gradient(135deg, #00f, #0ff);
-	  border: none;
-	  padding: 15px 40px;
-	  border-radius: 50px;
-	  font-size: 1.2rem;
-	  cursor: pointer;
-	  color: #000;
-	  font-weight: bold;
-	  transition: transform 0.3s, box-shadow 0.3s;
-	}
-
-	.song-btn:hover {
-	  transform: scale(1.1);
-	  box-shadow: 0 0 25px #0ff;
-	}
-
-	/* === Тексты караоке === */
-	.lyrics-container {
-	  position: relative;
-	  height: 180px;
-	  margin-top: 50px;
-	  display: flex;
-	  flex-direction: column;
-	  justify-content: center;
-	  overflow: hidden;
-	}
-
-	.lyric-line {
-	  font-size: 1.4rem;
-	  line-height: 1.8;
-	  transition: opacity 0.6s, transform 0.6s;
-	}
-
-	.lyric-prev,
-	.lyric-next {
-	  opacity: 0.4;
-	  font-size: 1.2rem;
-	}
-
-	.lyric-active {
-	  opacity: 1;
-	  font-weight: bold;
-	  font-size: 1.6rem;
-	  text-shadow: 0 0 15px rgba(255,255,255,0.8);
-	  color: #fff;
-	}
-
-	/* === Анимация смены строк === */
-	.shift-up {
-	  animation: shiftUp 0.6s ease forwards;
-	}
-
-	@keyframes shiftUp {
-	  0% { transform: translateY(0); opacity: 1; }
-	  100% { transform: translateY(-40px); opacity: 1; }
-	}
-	
-	/* === Раздел с глитч-кнопкой === */
-	.glitch-section {
-	  position: relative;
-	  background: linear-gradient(135deg, #1b2735, #090a0f);
-	  color: #fff;
-	  text-align: center;
-	  padding: 100px 20px;
-	  overflow: hidden;
-	}
-
-	/* Заголовок */
-	.glitch-section h2 {
-	  font-size: 2rem;
-	  margin-bottom: 30px;
-	  text-shadow: 0 0 15px #ff9900, 0 0 30px #ff6600;
-	  letter-spacing: 1px;
-	  animation: flicker 2.5s infinite alternate;
-	}
-
-	/* Кнопка с глитч-эффектом */
-	.glitch-btn {
-	  position: relative;
-	  display: inline-block;
-	  padding: 16px 40px;
-	  font-size: 1.2rem;
-	  font-weight: 600;
-	  color: #fff;
-	  background: linear-gradient(90deg, #ff6b00, #ffbb00);
-	  border: none;
-	  border-radius: 10px;
-	  cursor: pointer;
-	  overflow: hidden;
-	  transition: transform 0.2s ease, box-shadow 0.3s ease;
-	  text-transform: uppercase;
-	  box-shadow: 0 0 15px rgba(255, 153, 0, 0.6);
-	}
-
-	.glitch-btn:hover {
-	  transform: scale(1.05);
-	  box-shadow: 0 0 25px rgba(255, 153, 0, 0.8);
-	}
-
-	/* === ГЛИТЧ-КНОПКА === */
-	.glitch-section {
-	  background: linear-gradient(135deg, #1b2735, #090a0f);
-	  color: #fff;
-	  text-align: center;
-	  padding: clamp(60px, 10vw, 120px) 20px;
-	}
-	
-	.glitch-section h2 {
-	  font-size: clamp(1.5rem, 4vw, 2rem);
-	  margin-bottom: 30px;
-	  text-shadow: 0 0 15px #ff9900, 0 0 30px #ff6600;
-	}
-	
-	.glitch-btn {
-	  padding: 14px 36px;
-	  font-size: clamp(1rem, 3vw, 1.2rem);
-	  border-radius: 10px;
-	  background: linear-gradient(90deg, #ff6b00, #ffbb00);
-	  color: #fff;
-	  border: none;
-	  cursor: pointer;
-	  transition: transform 0.2s ease;
-	}
-	.glitch-btn:hover { transform: scale(1.05); }
-
-	/* Мерцание заголовка */
-	@keyframes flicker {
-	  0%, 18%, 22%, 25%, 53%, 57%, 100% {
-		opacity: 1;
-	  }
-	  20%, 24%, 55% {
-		opacity: 0.3;
-	  }
-	}
-	
-	/* === ПОДВАЛ === */
-	footer {
-	  text-align: center;
-	  padding: 60px 20px;
-	  background: #111;
-	}
-	footer h2 {
-	  font-size: clamp(1.5rem, 4vw, 2rem);
-	  animation: textGlow 2s infinite alternate;
-	}	
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#161716">
+  <meta name="description" content="Даурен, с двадцатипятилетием. Семь лет дружбы, наши моменты и миллион сердец — от Ислама.">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Даурен · 25 — Миллион сердец</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/oswald.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="assets/fonts/manrope.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
 </head>
 <body>
-  <!-- Кнопка музыки -->
-  <div class="music-btn" id="toSong">🔊</div>
+  <a class="skip-link" href="#main">К истории</a>
+  <div class="reading-progress" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Даурен, 25. В начало"><span class="brand-symbol">д<span>·</span></span><span class="brand-text">ДАУРЕН <span>/ 25</span></span></a>
+    <nav aria-label="Главы истории"><a href="#memories">Наши моменты</a><a href="#archive">Наш язык</a><a href="#letter">Отдуши</a></nav>
+    <button class="sound-toggle" type="button" aria-pressed="false" aria-label="Включить музыку"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10v4h4l5 4V6l-5 4H3Z"/><path class="sound-waves" d="M16 9a5 5 0 0 1 0 6m3-9a9 9 0 0 1 0 12"/><path class="sound-off" d="m17 10 4 4m0-4-4 4"/></svg><span>Звук выкл.</span></button>
+  </header>
 
-  <!-- Главный экран -->
-  <div class="container">
-    <h1>С ДНЁМ РОЖДЕНИЯ, ДАУРЕН!</h1>
-    <div class="typing" id="typing"></div>
-    <div class="big-text" id="bigText"></div>
-    <button class="btn" id="toAbout">Кто такой Даурен?</button>
-  </div>
-
-  <!-- Новый раздел: Что из себя представляет Даурен -->
-  <section class="about-dauren" id="about">
-    <h2 class="about-title">Что из себя представляет Даурен</h2>
-    <div class="about-container">
-      <div class="about-photo">
-        <img src="./img/dauren.jpg" alt="Даурен">
+  <main id="main">
+    <section class="hero section-pad" id="home" aria-labelledby="hero-title">
+      <div class="hero-topline"><span><i class="status-dot"></i> СЕГОДНЯ ТВОЯ ГЛАВА</span><span>14 ОКТЯБРЯ 2026 <b>↗</b> АЛМАТЫ</span></div>
+      <h1 id="hero-title">ДАУРЕН<span class="hero-asterisk" aria-hidden="true">✳</span></h1>
+      <div class="hero-composition">
+        <div class="hero-copy"><p class="small-label">САЛАМ, БРАД.</p><h2>Всё ещё засранец.<br>Всё ещё мой<br><em>лучший друг.</em></h2><p class="hero-note">Один маленький сайт.<br>Всё, что не помещается в «с днюхой».</p><a class="primary-button" href="#memories">Довай <span aria-hidden="true">↗</span></a></div>
+        <div class="hero-age" aria-label="25 лет">25<span>ЛЕТ / НОВАЯ ГЛАВА</span></div>
+        <div class="hero-photo-stack"><div class="photo-back" aria-hidden="true"></div><button class="hero-photo photo-open" data-photo="assets/photos/photo5-png.webp" data-caption="Улыбайся чаще, брад." aria-label="Открыть портрет Даурена"><img src="assets/photos/photo5-png.webp" alt="Даурен улыбается на прогулке" fetchpriority="high" width="500" height="700"><span class="photo-caption">ТОТ САМЫЙ БРАД. <span>↗</span></span></button><span class="hero-sticker">LEGENDARY<br>FRIEND</span></div>
       </div>
-      <div class="about-text">
-        Даурен — это уникальный сплав дисциплины, сарказма и бесконечного задротства, замешанный на искренности и редком чувстве юмора.<br><br>
-		Он родился 14 октября 2001 года, и с тех пор каждый баг в мире начал проверяться тщательнее — ведь появился человек, который по призванию тестирует всё вокруг: от кода до человеческих границ терпения.<br><br>
+      <div class="hero-bottom"><span>ОТ ИСЛАМА, С ЛЮБОВЬЮ И ПОДЪЁБАМИ</span><a href="#memories">ЛИСТАЙ, ЗАСРАНЕЦ <span aria-hidden="true">↓</span></a></div>
+    </section>
 
-		Живёт он в Алматы, вместе с матерью и братом — и, несмотря на шум мегаполиса, умудряется сохранять железное спокойствие. 
-		Это тот тип парня, который не просто планирует день — он реально выполняет план. И не потому что “надо”, а потому что он так устроен: целеустремлённый, собранный, без лишних понтов.<br><br>
+    <div class="friendship-strip" aria-label="Семь лет дружбы, 56 796 сообщений, одна группа, один лучший друг"><span><b>7</b> лет дружбы</span><span class="strip-star" aria-hidden="true">✳</span><span><b>56 796</b> сообщений</span><span class="strip-star" aria-hidden="true">✳</span><span>одна группа</span><span class="strip-star" aria-hidden="true">✳</span><span>один лучший друг</span></div>
 
-		Но не дай Бог подумать, что он скучный.<br>
-		Даурен — это легендарный «задрот» в лучшем смысле слова: CS2, мемы, ночные катки, фразы типа «да это не я туплю, это тупые тайминги» — его стихия.<br>
-		И при всём этом он способен поддержать, выслушать, подшутить и вытащить из любого дна настроения такими редкими выражениями в Discord:<br>
-		«Why am I not surpised?», «Do it», «Ты виноват!», «Засранец»<br><br>
-
-		Он тот, кто не ищет лёгких путей — он их дебажит.<br>
-		Тот, кто может работать, учиться и при этом оставаться собой.<br>
-		Тот, с кем можно молчать — и всё равно будет комфортно.<br><br>
-
-		Если коротко:<br>
-		Даурен — это человек, который живёт по принципу “делай, а не болтай”,<br>
-		но при этом умеет так рофлить, что ты потом смеёшься до утра.<br>
-		В нём идеально сочетаются мозг тестировщика, сердце брата и душа геймера.
-        <div class="interests">
-          <div class="interest">Ori</div>
-          <div class="interest">How to train a dragon?</div>
-          <div class="interest">CS2</div>
-          <div class="interest">Тренировки</div>
-          <div class="interest">Дисциплина</div>
-          <div class="interest">Мотивация</div>
-        </div>
+    <section class="memories light-section section-pad" id="memories" aria-labelledby="memories-title">
+      <div class="section-kicker"><span>01 / НАШЕ СОХРАНЕНИЕ</span><span>НЕКОТОРЫЕ МОМЕНТЫ ОСТАЮТСЯ</span></div>
+      <div class="section-heading"><h2 id="memories-title">МЫ НЕ ЗНАЛИ,<br>ЧТО ЭТО <span>НАДОЛГО.</span></h2><p>Просто оказались в одной группе.<br>А потом как-то стали семьёй.</p></div>
+      <div class="memory-layout">
+        <div class="memory-images"><button class="memory-main photo-open" id="memoryPhoto" data-photo="assets/photos/photo1-jpg.webp" data-caption="Первые дни в МУИТе" aria-label="Открыть фотографию воспоминания"><img id="memoryImage" src="assets/photos/photo1-jpg.webp" alt="Даурен за партой в университете" loading="lazy" width="700" height="850"><span class="expand-mark" aria-hidden="true">↗</span></button><div class="memory-secondary"><img id="memorySecondImage" src="assets/photos/photo7-jpg.webp" alt="Совместное фото из студенческих лет" loading="lazy" width="400" height="300"><span id="memoryHandwritten">два дебила. начало истории.</span></div><span class="memory-photo-label" id="memoryPhotoLabel">СТУДЕНЧЕСКИЕ ГОДЫ</span></div>
+        <div class="memory-story"><div class="memory-story-top"><span id="memoryPeriod">ГЛАВА ПЕРВАЯ</span><span class="memory-number"><span id="memoryCurrent">01</span> / 06</span></div><div id="memoryContent" aria-live="polite" aria-atomic="true"><h3 id="memoryTitle">В одной группе.<br>На одной волне.</h3><p id="memoryText">Пары, лабы, разговоры между делом. Тогда это была обычная жизнь. Сейчас — те самые студенческие годы, за которые я тебе благодарен.</p><blockquote id="memoryQuote">«Прост тот Даурен с универа иногда даёт о себе знать».</blockquote><span id="memoryQuoteSource" class="quote-source">ДАУРЕН · 17.07.2025</span></div><div class="memory-controls"><div class="memory-dots" aria-label="Выбрать воспоминание"><button class="active" data-memory="0" aria-label="Воспоминание 1: университет" aria-pressed="true"></button><button data-memory="1" aria-label="Воспоминание 2: диплом" aria-pressed="false"></button><button data-memory="2" aria-label="Воспоминание 3: катки" aria-pressed="false"></button><button data-memory="3" aria-label="Воспоминание 4: прогулки" aria-pressed="false"></button><button data-memory="4" aria-label="Воспоминание 5: встреча" aria-pressed="false"></button><button data-memory="5" aria-label="Воспоминание 6: дружба" aria-pressed="false"></button></div><div class="arrow-buttons"><button id="memoryPrev" aria-label="Предыдущее воспоминание">←</button><button id="memoryNext" aria-label="Следующее воспоминание">→</button></div></div></div>
       </div>
-    </div>
-    <button class="btn" id="toGallery">Смотреть историю дружбы</button>
-  </section>
+      <p class="memory-footnote">Фотографии старые. Люди те же. Только теперь кто-то лид на проекте.</p>
+    </section>
 
-  <!-- Галерея -->
-  <section class="friendship-gallery" id="gallery">
-    <h2 class="gallery-title">История нашей дружбы</h2>
-    <div class="photo-line">
-      <div class="photo"><img src="./img/photo1.jpg" alt=""><div class="caption">Первые дни в МУИТе</div></div>
-      <div class="photo"><img src="./img/photo2.jpg" alt=""><div class="caption">Знакомство с шарагой</div></div>
-      <div class="photo"><video src="./video/video1.mp4" autoplay muted loop></video><div class="caption">Весёлые моменты</div></div>
-      <div class="photo"><img src="./img/photo3.jpg" alt=""><div class="caption">Сумасшедшие будние</div></div>
-      <div class="photo"><video src="./video/video2.mp4" autoplay muted loop></video><div class="caption">Избавляемся от шлака</div></div>
-      <div class="photo"><img src="./img/photo4.jpg" alt=""><div class="caption">Настоящий он вырывается</div></div>
-	  <div class="photo"><img src="./img/photo5.jpg" alt=""><div class="caption">Усердно работали над хуеломкой(дипломкой)</div></div>
-	  <div class="photo"><img src="./img/photo6.jpg" alt=""><div class="caption">Ебать, че за взгляд, ауф</div></div>
-	  <div class="photo"><img src="./img/photo7.jpg" alt=""><div class="caption">Опять эти, два дебила</div></div>
-	  <div class="photo"><img src="./img/photo8.jpg" alt=""><div class="caption">Вылупился мило</div></div>
-	  <div class="photo"><img src="./img/photo9.jpg" alt=""><div class="caption">Мой сюрприз приезд удался</div></div>
-	  <div class="photo"><img src="./img/photo10.jpg" alt=""><div class="caption">Главное в жизни найти того, кто будет смотреть также</div></div>
-	  <div class="photo"><img src="./img/photo11.jpg" alt=""><div class="caption">Некачественное - качественное фото</div></div>
-	  <div class="photo"><img src="./img/photo12.jpg" alt=""><div class="caption">Смешинка попала</div></div>
-	  <div class="photo"><img src="./img/photo13.jpg" alt=""><div class="caption">Каждый в своем мире короче</div></div>
-	  <div class="photo"><img src="./img/photo14.jpg" alt=""><div class="caption">Wassup, bitches</div></div>
-	  <div class="photo"><img src="./img/photo15.jpg" alt=""><div class="caption">Страшно, вырубай</div></div>
-	  <div class="photo"><img src="./img/photo16.jpg" alt=""><div class="caption">Fuck You</div></div>
-	  <div class="photo"><img src="./img/photo17.jpg" alt=""><div class="caption">На лекции, ёпта</div></div>
-	  <div class="photo"><img src="./img/photo18.jpg" alt=""><div class="caption">Здрасьте, добрый вечер</div></div>
-	  <div class="photo"><img src="./img/photo19.jpg" alt=""><div class="caption">ПОШЛИ ВОН, без меня собрались</div></div>
-	  <div class="photo"><img src="./img/photo20.jpg" alt=""><div class="caption">АХАХАХХАХАХАХАХАХА</div></div>
-	  <div class="photo"><img src="./img/photo21.jpg" alt=""><div class="caption">Буквально</div></div>
-	  <div class="photo"><img src="./img/photo22.jpg" alt=""><div class="caption">Потные Алатауские вечера</div></div>
-	  <div class="photo"><img src="./img/photo23.jpg" alt=""><div class="caption">Эх, душевные прогулки летом</div></div>
-	  <div class="photo"><img src="./img/photo24.jpg" alt=""><div class="caption">Наконец-то, выпустили</div></div>
-	  <div class="photo"><img src="./img/photo25.jpg" alt=""><div class="caption">Bombastic side eye</div></div>
-	  <div class="photo"><img src="./img/photo1.png" alt=""><div class="caption">Видал маи бицепсики?!</div></div>
-	  <div class="photo"><img src="./img/photo2.png" alt=""><div class="caption">У всех gross face</div></div>
-	  <div class="photo"><img src="./img/photo3.png" alt=""><div class="caption">Сохнут по нему, аж засмушался</div></div>
-	  <div class="photo"><img src="./img/photo4.png" alt=""><div class="caption">В обнимку, ммм</div></div>
-	  <div class="photo"><img src="./img/photo5.png" alt=""><div class="caption">Че лыбишься?(улыбайся чаще)</div></div>
-	  <div class="photo"><img src="./img/photo6.png" alt=""><div class="caption">Упс, папарацци</div></div>
-    </div>
-  </section>
+    <section class="character section-pad" id="character" aria-labelledby="character-title">
+      <div class="section-kicker"><span>02 / СБОРКА БЕЗ АНАЛОГОВ</span><span>ТАШКЕНТ → АЛМАТЫ → СВОЙ ПУТЬ</span></div>
+      <div class="section-heading"><h2 id="character-title">КОЛЬЦА. КАТКИ.<br><span>ХАРАКТЕР.</span></h2><p>Очки. Цезарь. Железная хватка.<br>Узнаю из тысячи.</p></div>
+      <div class="character-grid">
+        <article class="character-tile workout-tile"><span class="tile-label">01 / СИЛА</span><svg class="rings-art" viewBox="0 0 300 210" aria-hidden="true"><path d="M85 0v90M215 0v90"/><ellipse cx="85" cy="133" rx="41" ry="49"/><ellipse cx="215" cy="133" rx="41" ry="49"/><path class="rings-detail" d="m71 172 29-36m101 36 29-36"/></svg><h3>Кольца —<br>game changer.</h3><p>Трицепсы в ахуе.<br>Даурен доволен.</p><span class="tile-note">ПРОВЕРЕНО ЛИЧНО</span></article>
+        <article class="character-tile games-tile"><span class="tile-label">02 / ЕГО МИРЫ</span><div class="game-orbit" aria-hidden="true"><span></span><span></span><span></span><i>✳</i></div><div class="game-content" aria-live="polite"><h3 id="gameTitle">Не просто<br>ещё одна игра.</h3><p id="gameText">«Вы засранцы Ori не прошли».<br>История, боёвка, музыка — всё на высоте.</p></div><div class="game-tabs" aria-label="Любимые игры"><button data-game="spider" aria-pressed="false">Spider-Man</button><button data-game="gow" aria-pressed="false">God of War</button><button data-game="ori" class="active" aria-pressed="true">Ori</button><button data-game="cs" aria-pressed="false">CS2</button></div></article>
+        <article class="character-tile work-tile"><span class="tile-label">03 / МОЗГ</span><div class="code-art" aria-hidden="true">&lt;<span>/</span>&gt;</div><h3>Лид на проекте.<br>Брад в личке.</h3><p>Разберётся. Подскажет.<br>Потом ещё подъебёт.</p><span class="tile-note">FEATURE, NOT A BUG</span></article>
+        <article class="character-tile brother-tile"><span class="tile-label">04 / ГЛАВНОЕ</span><div class="infinity-art" aria-hidden="true">∞</div><h3>Сила — ещё<br>и в том, кто ты.</h3><p>Вера. Терпение. Близкие.<br>И умение оставаться собой.</p><span class="tile-note">ЗА ЭТО УВАЖАЮ</span></article>
+      </div>
+    </section>
 
-  <!-- Модалка -->
-  <div id="modal" class="modal">
-    <span class="close">&times;</span>
-    <img class="modal-content" id="modalImg" src="">
-  </div>
-  
-  <!-- --- Раздел: Моё поздравление --- -->
-	<section class="my-congrats" id="my-congrats">
-	  <div class="holo-frame">
-		<h2 class="holo-title">МОЁ ПОЗДРАВЛЕНИЕ</h2>
-		<div class="holo-core">
-		  <p id="holoText"></p>
-		  <div class="pulse-ring"></div>
-		</div>
-	  </div>
-	</section>
-	
-  <!-- === Раздел песни с караоке-анимацией === -->
-	<section class="song-section" id="song">
-	  <h2 class="song-title">🎶 Песня для тебя</h2>
-	  <div class="song-container">
-		<audio id="songAudio" src="./audio/song.mp3"></audio>
-		<button id="playSong" class="song-btn">▶️ Включить песню</button>
-		<div class="lyrics-container">
-		  <div class="lyric-line lyric-prev" id="prevLine"></div>
-		  <div class="lyric-line lyric-active" id="activeLine"></div>
-		  <div class="lyric-line lyric-next" id="nextLine"></div>
-		</div>
-	  </div>
-	</section>
-	
-	<!-- === Отдельный блок: кнопка перехода на баги-сюрпризы === -->
-  <section class="glitch-section">
-    <div style="text-align:center; padding:100px 20px; background:linear-gradient(135deg,#1b2735,#090a0f);">
-      <h2 style="font-size:2rem; margin-bottom:30px; text-shadow:0 0 15px #ff9900;">Хочешь немного хаоса?</h2>
-      <button class="glitch-btn" onclick="window.location.href='./bugs/bugs.html'">
-        🎁 Баги-сюрпризы
-        <span class="glitch-layer"></span>
-        <span class="glitch-layer"></span>
-      </button>
-    </div>
-  </section>
+    <section class="archive section-pad" id="archive" aria-labelledby="archive-title">
+      <div class="section-kicker"><span>03 / НАШ ЯЗЫК</span><span>ПОСТОРОННИЕ НЕ ПОЙМУТ</span></div>
+      <div class="section-heading"><h2 id="archive-title">БРАД,<br>Я Ж <span>ЛЮБЯ.</span></h2><p>Некоторые говорят «я тебя ценю».<br>Мы говорим «засранец».</p></div>
+      <div class="chat-grid">
+        <article class="chat-card"><div class="chat-card-header"><span class="chat-avatar">И</span><span>Тот самый Даурен<span class="chat-card-date">17 июля 2025</span></span><span aria-hidden="true">↗</span></div><div class="chat-bubble outgoing">Мой лучший друг Даурен такое не сказал бы<span>18:14 ✓✓</span></div><div class="chat-bubble incoming">Прост тот Даурен с универа иногда даёт о себе знать<span>18:14</span></div><div class="chat-card-footer">СТАРОЕ СОХРАНЕНИЕ ЗАГРУЖЕНО</div></article>
+        <article class="chat-card"><div class="chat-card-header"><span class="chat-avatar red">Д</span><span>Рекомендация года<span class="chat-card-date">11 декабря 2025</span></span><span aria-hidden="true">↗</span></div><div class="chat-bubble incoming">Вы засранцы Ori не прошли<span>16:55</span></div><div class="chat-bubble incoming">Хотя история, боевка, музыка все было на высоте<span>16:55</span></div><button class="ori-promise" id="oriPromise">Да пройду я, бля <span>↗</span></button><p class="promise-response" id="promiseResponse" hidden>Обещание принято. Даурен будет проверять.</p></article>
+        <article class="chat-card"><div class="chat-card-header"><span class="chat-avatar">И</span><span>Классика жанра<span class="chat-card-date">7 августа 2026</span></span><span aria-hidden="true">↗</span></div><div class="chat-bubble outgoing">Нет хуже врага чем лучший друг<span>11:05 ✓✓</span></div><div class="chat-bubble incoming">АХАХААХАХАХ<span>11:05</span></div><div class="chat-bubble incoming">брад я ж любя<span>11:05</span></div><div class="chat-card-footer">ПЕРЕВОД: ТЫ МНЕ ДОРОГ</div></article>
+      </div>
+      <div class="quiz" id="quiz"><div class="quiz-intro"><span class="small-label">БОНУС / ПРОВЕРКА НА БРАДА</span><h3>Чья реплика?</h3><p>Три вопроса. Без пересдачи.<br>Впрочем, тут оба засранцы.</p></div><div class="quiz-play"><div class="quiz-top"><span id="quizStep">ВОПРОС 01 / 03</span><span id="quizScore">0 / 3</span></div><blockquote id="quizQuote">«От твоего слишком потного друхана»</blockquote><div class="quiz-answers"><button data-answer="dauren">Даурен</button><button data-answer="islam">Ислам</button></div><div class="quiz-feedback" id="quizFeedback" aria-live="polite"></div><button class="text-button" id="quizNext" hidden>Следующий вопрос <span>→</span></button><button class="text-button" id="quizRestart" hidden>Ещё раз <span>↻</span></button></div></div>
+    </section>
 
-  <!-- Финал -->
-  <footer>
-    <h2>С огромным хуём... ой, любовью от Ислама 🤝</h2>
-  </footer>
+    <section class="quiet-section light-section section-pad" aria-labelledby="quiet-title">
+      <div class="section-kicker"><span>04 / ЗА ВСЕМИ ПОДКОЛАМИ</span><span>КОЕ-ЧТО ВАЖНОЕ</span></div>
+      <div class="quiet-layout"><div class="quiet-copy"><span class="small-label">ЛАДНО, БРАД.</span><h2 id="quiet-title">Теперь<br><em>отдуши.</em></h2><p>Ты сделал чужой город своим.<br>Просто потому, что был рядом.</p><p>Я могу не говорить это каждый день.<br>Но я это помню.</p><div class="quiet-quote"><span class="quote-mark" aria-hidden="true">“</span><blockquote>Дай Бог до самого конца будем так дружны и поддерживать друг друга во всех этапах жизни🤲🏻</blockquote><span class="quote-source">МОИ СЛОВА ТЕБЕ · 12.07.2026</span></div></div><figure class="quiet-photo"><button class="photo-open" data-photo="assets/photos/photo23-jpg.webp" data-caption="Эх, душевные прогулки летом" aria-label="Открыть совместную фотографию"><img src="assets/photos/photo23-jpg.webp" alt="Даурен и Ислам на летней прогулке" loading="lazy" width="900" height="700"></button><figcaption>Из тех дней, которые хочется сохранить.<span>ИЗ НАШЕГО АРХИВА ↗</span></figcaption></figure></div>
+    </section>
 
-  <script>
-    // Эффект печати
-    const text = "Брат, 24 — это только начало!\nТы стал сильным, умным и верным своим целям.\nПусть каждый баг превращается в апдейт,\nа жизнь радует новыми достижениями!";
-    let i = 0;
-    const typingDiv = document.getElementById('typing');
-    function typing() {
-      if (i < text.length) {
-        typingDiv.textContent += text.charAt(i);
-        i++;
-        setTimeout(typing, 50);
-      } else {
-        document.getElementById('bigText').textContent = "ДАУРЕН, ТЫ ЛУЧШИЙ!";
-        startConfetti();
-      }
-    }
-    typing();
+    <section class="million-section section-pad" id="million" aria-labelledby="million-title">
+      <div class="section-kicker"><span>05 / Я КОЕ-ЧТО ЗАПОМНИЛ</span><span>14 ОКТЯБРЯ 2024 → СЕГОДНЯ</span></div>
+      <div class="million-intro"><div class="original-message"><div><span class="chat-avatar red">Д</span><p>Даурен<span>14 октября 2024 · 00:16</span></p></div><blockquote>Рахмет братан, если бы была возможность поставить миллион сердец то я бы это сделал, даже если забью БД к чертям</blockquote><span class="message-heart" aria-hidden="true">♥ 1</span></div><p class="million-reply">Я запомнил, засранец.<br><span>Сегодня этот миллион — тебе.</span></p></div>
+      <div class="hearts-stage"><canvas id="heartsCanvas" aria-hidden="true"></canvas><div class="million-display"><span class="small-label">ОДНОМУ БРАТУ</span><h2 id="million-title"><span id="heartCount">0</span></h2><p>сердец. отдуши.</p><button class="primary-button" id="heartButton">Забрать свой миллион <span aria-hidden="true">♡</span></button><span class="hearts-complete" id="heartsComplete" hidden>База цела. Братство тоже.</span></div></div>
+      <a class="million-next" href="#letter">А теперь то, ради чего всё это <span aria-hidden="true">↓</span></a>
+    </section>
 
-    // Конфетти
-    function startConfetti() {
-      for (let i = 0; i < 100; i++) {
-        const confetti = document.createElement("div");
-        confetti.classList.add("confetti");
-        confetti.style.left = Math.random() * window.innerWidth + "px";
-        confetti.style.background = `hsl(${Math.random()*360}, 100%, 50%)`;
-        confetti.style.animationDuration = (Math.random() * 3 + 2) + "s";
-        document.body.appendChild(confetti);
-        setTimeout(() => confetti.remove(), 5000);
-      }
-    }
+    <section class="letter-section light-section section-pad" id="letter" aria-labelledby="letter-title">
+      <div class="section-kicker"><span>06 / ЛИЧНОЕ</span><span>ОТ ИСЛАМА — ДАУРЕНУ</span></div>
+      <div class="letter-layout"><div class="letter-side"><span class="small-label">БЕЗ ШУТОК.<br>НУ, ПОЧТИ.</span><h2 id="letter-title">Родной,<br>с 25-летием.</h2><div class="letter-photo"><img src="assets/photos/photo7-jpg.webp" alt="Ислам и Даурен в студенческие годы" loading="lazy" width="500" height="400"><span>мы. всё ещё мы.</span></div><span class="letter-date">14 / 10 / 2026</span></div><div class="letter-body"><p class="letter-greeting">Салам, брад.</p><p>Семь лет назад мы просто оказались в одной группе. Я тогда ещё не знал, что рядом сидит человек, который станет мне настолько близким. Что обычные пары, разговоры и вся наша универская хуйня потом будут вспоминаться с такой теплотой.</p><p>Ты знаешь, я уже говорил тебе: благодаря тебе у меня были лучшие студенческие годы. Даже в чужом городе я не чувствовал себя одиноким. Это не красивая фраза для поздравления. Это то, за что я тебе до сих пор благодарен.</p><p>Я люблю, что с тобой можно поржать до слёз, послать друг друга нахер и через минуту говорить о чём-то серьёзном. Что не надо подбирать слова, притворяться или объяснять, почему сегодня тяжело. Можно просто быть собой.</p><p>Сейчас у нас работа, свои дела, разное расстояние до Алматы. Но ты всё тот же брад. Тот, кто помнит, чем я угощал в универе. Кто ждёт на катку. Кто в своём поздравлении пишет так, что я потом сижу и думаю: <strong>бля, как же мне повезло.</strong></p><p>Желаю тебе того дома, о котором ты рассказываешь. С турником, кольцами, брусьями и теннисным столом. Спокойствия за маму и близких. Здоровья, крепкой веры и работы, которой ты доволен. Чтобы хватало и на планы, и на хотелки. И чтобы рядом были люди, с которыми тебе хорошо.</p><p>Ты много стараешься. Хочу, чтобы в твоей жизни было больше дней, когда можно просто выдохнуть и сказать: «Кайф. Я на своём месте».</p><p>Спасибо, что ты есть, родной. За все наши годы. За смех. За разговоры. За тебя.</p><p class="letter-closing">С днюхой, засранец.<br>Я рядом. И в следующей главе тоже.</p><div class="letter-signature"><span>Твой Ислам</span><svg viewBox="0 0 90 60" aria-hidden="true"><path d="M45 51C-10 18 21-13 45 14 69-13 100 18 45 51Z"/></svg></div><p class="letter-ps">P.S. Обнимаю. Только рёбра оставь — ты же знаешь свою силу.</p></div></div>
+    </section>
 
-    // Переходы
-    document.getElementById('toAbout').onclick = () => {
-      document.getElementById('about').scrollIntoView({behavior:'smooth'});
-    };
-    document.getElementById('toGallery').onclick = () => {
-      document.getElementById('gallery').scrollIntoView({behavior:'smooth'});
-    };
-	document.getElementById('toSong').onclick = () => {
-      document.getElementById('song').scrollIntoView({behavior:'smooth'});
-    };
+    <section class="ending section-pad" aria-labelledby="ending-title"><span class="small-label">СОХРАНЕНИЕ НЕ ЗАКОНЧЕНО</span><h2 id="ending-title">СЛЕДУЮЩАЯ ГЛАВА —<br><span>ВМЕСТЕ.</span></h2><p>Ну что, брад. В пятницу катаем?</p><div class="ending-actions"><a class="primary-button" href="#home">Ещё раз <span aria-hidden="true">↗</span></a><button class="outline-button" id="openGallery">Наши моменты <span aria-hidden="true">＋</span></button></div><div class="ending-footer"><span>СДЕЛАНО ДЛЯ ОДНОГО ЧЕЛОВЕКА.</span><span>ДАУРЕН × ИСЛАМ <b>♥</b> 2026</span></div></section>
+    <section class="verse-invite" aria-labelledby="verse-invite-title"><div><span class="small-label">СЕКРЕТНЫЙ DLC / ОТКРЫТ</span><h2 id="verse-invite-title">Брад, тебя ждут<br>в другой вселенной.</h2><p>Четыре героини. Легендарный лут. И твоя новая история.</p></div><a class="primary-button" href="verse.html">Открыть ДауренVerse <span aria-hidden="true">↗</span></a></section>
+  </main>
 
-    // Модалка
-    const modal = document.getElementById("modal");
-    const modalImg = document.getElementById("modalImg");
-    const closeBtn = document.querySelector(".close");
-    document.querySelectorAll(".photo img").forEach(img => {
-      img.onclick = () => {
-        modal.style.display = "flex";
-        modalImg.src = img.src;
-      };
-    });
-    closeBtn.onclick = () => modal.style.display = "none";
-    modal.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
-	
-	const congratsText = `
-	Даурен, брат.
-	14 октября — день, когда мир официально стал немного лучше, а интернет — медленнее, потому что появился ты, главный тестировщик всего, что только можно протестировать: от багов в играх до моей психики.
-
-	Помню, как в августе 2019-го мы оба стояли на пороге универа — такие умные, такие наивные, и абсолютно не понимали, во что вписываемся. И вот прошло уже столько лет — а мы всё те же, только теперь ты в Алматы, серьёзный мужчина с планами, целями и чётким тайм-менеджментом (а я до сих пор не понимаю, как ты живёшь по расписанию, а не по вдохновению и багрепортам судьбы).
-
-	Ты — тот самый редкий тип человека, который не просто говорит «надо работать над собой», а реально это делает. Дисциплина, ответственность, мозги, уверенность — и всё это приправлено твоим фирменным хыхунизмом и способностью рофлить так, что даже после тяжёлого дня ржёшь до слёз.
-
-	Но знаешь, что самое крутое?
-	Ты не просто задрот. Ты — задрот с душой. Да-да, звучит как оксюморон, но ты доказываешь, что можно быть задротом и при этом настоящим человеком: добрым, верным и тем, кто всегда рядом.
-
-	Каждая пятница, когда мы залетаем в CS2, — это уже не просто катка. Это мини-праздник, где ты орёшь в микрофон «ЭТО МОЙ РАУНД!», потом делаешь 30 фрагов подряд, а я вспоминаю, что дружба — это когда тебя унижают на Dust2, но ты всё равно счастлив.
-
-	Даур, Венджегуль, Хыхун — ты для меня не просто друг. Ты уже часть моей истории, тот человек, с кем можно молчать часами и всё равно понимать друг друга без слов.
-	Ты вырос, стал взрослым, но при этом остался тем же добрым пацаном, который не боится мечтать, ржать и жить по-настоящему.
-
-	Так что в твой день рождения я не просто желаю тебе счастья — я желаю тебе стабильного FPS в жизни, минимального пинга с судьбой и, конечно, бесконечного лута в виде здоровья, удачи и любви.
-	Пусть все баги решаются легко, а жизнь катится как идеальный спидран без лагов.
-
-	С днём рождения, брат.
-	Ты — тот, с кем хоть в катку, хоть в жизнь.
-	И если бы существовал рейтинг друзей, ты был бы в топ-1. Даже без буста.
-	`;
-
-	let j = 0;
-	const holoText = document.getElementById("holoText");
-
-	function typeHolo() {
-	  if (j < congratsText.length) {
-		holoText.textContent += congratsText.charAt(j);
-		j++;
-		setTimeout(typeHolo, 35);
-	  }
-	}
-
-	window.addEventListener("scroll", () => {
-	  const section = document.getElementById("my-congrats");
-	  const rect = section.getBoundingClientRect();
-	  if (rect.top < window.innerHeight / 1.3 && rect.bottom > 0) {
-		if (holoText.textContent === "") {
-		  typeHolo();
-		}
-	  }
-	});
-	
-	const lyricsData = [
-	  { time: 0, text: "..." },
-	  { time: 6, text: "Smoking cigarettes on the roof" },
-	  { time: 13, text: "You look so handsome and I admire this view" },
-	  { time: 20, text: "We became friends in October" },
-	  { time: 25, text: "That's why, I love fall" },
-	  { time: 29, text: "Looking at the stars" },
-	  { time: 32, text: "Admiring from afar" },
-	  { time: 36, text: "Ma boi, ma boi, ma boi" },
-	  { time: 41, text: "You will be ma boi" },
-	  { time: 43, text: "Ma boi, ma boi, ma boi" },
-	  { time: 49, text: "You will be ma world" },
-	  { time: 51, text: "Ma world, ma world, ma world" },
-	  { time: 56, text: "You will be ma boi" },
-	  { time: 58, text: "🖤" },
-	];
-
-	const audio = document.getElementById('songAudio');
-	const playBtn = document.getElementById('playSong');
-	const prevLine = document.getElementById('prevLine');
-	const activeLine = document.getElementById('activeLine');
-	const nextLine = document.getElementById('nextLine');
-
-	let currentIndex = 0;
-	let interval;
-
-	playBtn.addEventListener('click', () => {
-	  if (audio.paused) {
-		audio.play();
-		playBtn.textContent = '⏸ Пауза';
-		startLyrics();
-	  } else {
-		audio.pause();
-		playBtn.textContent = '▶️ Продолжить';
-		clearInterval(interval);
-	  }
-	});
-
-	function startLyrics() {
-	  clearInterval(interval);
-	  currentIndex = 0;
-	  updateLyricsDisplay();
-
-	  interval = setInterval(() => {
-		if (currentIndex < lyricsData.length - 1 && audio.currentTime >= lyricsData[currentIndex + 1].time) {
-		  currentIndex++;
-		  animateLyricsChange();
-		}
-		if (currentIndex >= lyricsData.length - 1) clearInterval(interval);
-	  }, 300);
-	}
-
-	function updateLyricsDisplay() {
-	  prevLine.textContent = lyricsData[currentIndex - 1]?.text || '';
-	  activeLine.textContent = lyricsData[currentIndex]?.text || '';
-	  nextLine.textContent = lyricsData[currentIndex + 1]?.text || '';
-	}
-
-	function animateLyricsChange() {
-	  document.querySelector('.lyrics-container').classList.add('shift-up');
-
-	  setTimeout(() => {
-		updateLyricsDisplay();
-		document.querySelector('.lyrics-container').classList.remove('shift-up');
-	  }, 600); // должна совпадать с animation-duration
-	}
-
-	audio.addEventListener('ended', () => {
-	  playBtn.textContent = '▶️ Включить песню';
-	  clearInterval(interval);
-	});
-  </script>
+  <dialog class="photo-dialog" id="photoDialog" aria-label="Фотография из нашего архива"><button class="dialog-close" id="closePhoto" aria-label="Закрыть фотографию">×</button><img id="dialogImage" alt=""><p id="dialogCaption"></p></dialog>
+  <dialog class="gallery-dialog" id="galleryDialog" aria-labelledby="galleryTitle"><div class="gallery-heading"><div><span class="small-label">ЕЩЁ НЕМНОГО НАС</span><h2 id="galleryTitle">Наши моменты.</h2></div><button class="dialog-close" id="closeGallery" aria-label="Закрыть галерею">×</button></div><div class="gallery-grid" id="galleryGrid"></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
-
-
-
-
-

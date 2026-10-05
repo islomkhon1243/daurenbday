@@ -1,0 +1,23 @@
+# Иллюстрации ДауренVerse
+
+Созданы встроенным imagegen. Режим: новая генерация, непрозрачный фон. Оригиналы сохранены; для сайта выполнено только уменьшение и кодирование WebP.
+
+## world
+
+Use case: stylized-concept. Asset type: wide cinematic background for a personal interactive anime birthday multiverse website. Primary request: futuristic Almaty at midnight with majestic recognizable snow-capped Tien Shan mountains behind a dense modern city, a circular luminous interdimensional portal over the central plaza and trails of soft light leading into the portal. Stylized premium anime film environment painting, sophisticated painterly detail, violet sky, cyan and coral light accents, muted deep navy architecture, warm windows, atmospheric depth. Landscape 16:9 composition with the city in the lower half and spacious dark sky in the upper half for website typography, no characters, no writing, no logos, no watermark. Beautiful restrained cinematic illustration, not generic neon overload.
+
+## aira
+
+Use case: illustration-story. Asset type: portrait character illustration for a personal birthday website, 2:3 portrait composition. Primary request: original adult anime heroine Aira, a 25-year-old confident friendly esports champion, short silver bob haircut with soft violet highlights, bright violet eyes, stylish dark bomber jacket over a fully covering lavender athletic shirt, professional gaming headphones around her neck, small controller casually held in one hand. Waist-up character facing camera, amused warm smile as though greeting a friend. Background: softly glowing violet gaming studio with holographic abstract shapes but no text. Premium cinematic anime illustration with detailed expressive face, subtle painterly texture, excellent anatomical hands, lively natural pose, violet and charcoal palette with small cyan accents. Clearly adult, wholesome birthday greeting, no sexualization, no school uniform, no existing franchise characters, no writing or watermarks.
+
+## saga
+
+Use case: illustration-story. Asset type: portrait character illustration for a personal birthday website, 2:3 portrait composition. Primary request: original adult anime heroine Saga, a 28-year-old strong Nordic warrior woman with long reddish auburn braided hair and golden amber eyes, practical ornate armor covering chest and shoulders and dark leather gloves, holding a grounded axe beside her, dignified warm proud smile facing camera. Waist-up, a very capable friendly warrior congratulating a dear friend. Snowy mountain sanctuary and amber embers in soft-focus background. Premium cinematic anime illustration with beautiful expressive face, painterly detail, rich warm amber copper and charcoal palette. Adult, practical armor, no sexualized outfit, no cleavage, no existing franchise characters, no text, no watermark.
+
+## lumi
+
+Use case: illustration-story. Asset type: portrait character illustration for a personal birthday website, 2:3 portrait composition. Primary request: original adult anime heroine Lumi, a 25-year-old magical forest guardian with flowing pale mint-white hair, expressive teal eyes, subtly pointed elf ears, elegant full-coverage layered teal cloak and dark forest dress. Gentle emotionally warm smile directly to the viewer, one palm holding a tiny luminous spirit orb. Waist-up figure, enchanted night forest with bioluminescent plants and soft fireflies behind her. Premium cinematic anime film illustration, expressive adult face, elegant anatomy, painterly detail, cyan teal sea-green glow and deep navy palette. Adult, wholesome birthday greeting, no sexualization, no school uniform, no existing franchise characters, no writing, no watermark.
+
+## nova
+
+Use case: illustration-story. Asset type: portrait character illustration for a personal birthday website, 2:3 portrait composition. Primary request: original adult anime heroine Nova, a 26-year-old witty futuristic Almaty city navigator, long dark hair with one coral streak, warm brown eyes, stylish fully covering charcoal techwear jacket with coral illuminated seams, small futuristic earpiece, holding a translucent holographic city map with abstract lines and no letters. Waist-up looking directly at viewer with welcoming playful confident smile. Futuristic Almaty skyline, snow-capped mountains and coral city lights in background. Premium detailed cinematic anime illustration, sophisticated expressive adult face, painterly textures, coral charcoal and muted blue palette. Adult, no sexualization, no existing franchise character, no logos, no writing, no watermark.
